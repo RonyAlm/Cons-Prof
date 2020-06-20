@@ -29,7 +29,7 @@
                     <a href="#">INICIAR SESIÓN</a>
                     <ul>
                         <li>
-                            <a href="Cliente/login.php">ACCESO CLIENTE</a>
+                            <a href="login.php">ACCESO CLIENTE</a>
                         </li>
                         <li>
                             <a href="Profesional/login.php">ACCESO PROFESIONAL</a>
