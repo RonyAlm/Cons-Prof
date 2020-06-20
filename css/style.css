@@ -1,0 +1,179 @@
+/*FUENTES*/
+
+
+@font-face {
+    font-family: "TrebuchetMS";
+    src: url(fonts/TrebuchetMS.ttf);
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "BebasNeue";
+    src: url(fonts/BebasNeue.otf);
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BAUHS93';
+    src: url('fonts/BAUHS93.eot');
+    src: local('BAUHS93'), url('fonts/BAUHS93.woff') format('woff'), url('fonts/BAUHS93.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: "WebSymbolsRegular";
+    src: url('fonts/websymbols-regular-webfont.eot');
+    src: url('fonts/websymbols-regular-webfont.eot?#iefix') format('embedded-opentype'),
+        url('fonts/websymbols-regular-webfont.woff') format('woff'),
+        url('fonts/websymbols-regular-webfont.ttf') format('truetype'),
+        url('fonts/websymbols-regular-webfont.svg#WebSymbolsRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+/*GENERALES*/
+
+
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    background: url('../img/redes-sociales-profesionales-1.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-position-y: 47%;
+    background-color: #0199AE;
+}
+
+.wrap {
+    width: 1200px;
+    margin: 0px auto;
+    /*Para centrar*/
+}
+
+.gear {
+    font-family: 'WebSymbolsRegular';
+}
+
+.icon {
+    font-family: 'WebSymbolsRegular';
+}
+
+
+.clearfix {
+    float: none;
+    clear: both;
+}
+
+/*CABECERA*/
+
+
+#header {
+    
+    display: flex;
+    width: 100%;
+    height: 65px;
+    background-color: #343A40;
+
+}
+
+#logoimg {
+    width: 277px;
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-items: center;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+#menu {
+    height: 44px;
+    width: 100%;
+    background: #37bcf9;
+    font-size: 13px;
+    box-shadow: 0px 1px 3px gray;
+}
+
+#menu ul {
+    text-align: right;
+}
+
+#menu ul li {
+    display: inline-block;
+    width: 225px;
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: 1px;
+    line-height: 40px;
+    border: 2px solid white;
+
+    text-align: center;
+}
+
+#menu ul li a {
+    display: block;
+    padding-left: 22px;
+    padding-right: 22px;
+    color: white;
+    text-decoration: none;
+    transition: all 200ms;
+}
+
+#menu ul li:hover {
+    background-color: #24B3DB;
+    color: #43425D;
+    border-bottom: 3px solid #43425D;
+}
+
+/*MENU DESPLEGABLE*/
+#menu>ul>li>ul {
+    display: none;
+    position: absolute;
+    width: 224px;
+    background-color: #0AA9BE;
+    box-shadow: 0px 2px 2px gray;
+    z-index: 1;
+    /*Para que se superponga sobre el resto de elemento*/
+    color: white;
+}
+
+#menu>ul>li:hover>ul {
+    display: block;
+}
+
+#menu>ul>li:hover>ul>li {
+    background-color: #37bcf9;
+    line-height: 40px;
+    color: white;
+    transition: all 300ms;
+}
+
+#menu>ul>li:hover>ul>li a {
+    color: white;
+}
+
+#menu>ul>li:hover>ul>li:hover {
+    background: #24B3DB;
+}
+
+/*Footer. Pie de Pagina*/
+
+#footer {
+    width: 100%;
+    margin: 0px auto;
+    text-align: center;
+    margin-top: 600px;
+    background-color: #343A40;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: white;
+    font-family: sans-serif;
+    font-size: 14px;
+    box-shadow: 0px 0px 2px gray;
+}

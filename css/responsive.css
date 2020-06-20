@@ -1,0 +1,13 @@
+@media (max-width: 1202px) {
+    #header {
+        display: flex;
+        justify-content: center;
+
+    }
+
+
+    #menu ul {
+        text-align: center;
+    }
+
+}
