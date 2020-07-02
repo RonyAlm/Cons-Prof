@@ -1,5 +1,21 @@
+<?php 
+
+require 'login/funcs/conexion.php';
+require 'login/funcs/funcs.php';
+
+    
+
+    $sql = "SELECT id, tipo FROM tipo_usuario ORDER BY tipo";
+    $result = $mysqli->query($sql);
+
+     
+	
+    
+    
+    
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -28,12 +44,12 @@
                 <li>
                     <a href="#">INICIAR SESIÓN</a>
                     <ul>
-                        <li>
-                            <a href="Cliente/login.php">ACCESO CLIENTE</a>
-                        </li>
-                        <li>
-                            <a href="Profesional/login.php">ACCESO PROFESIONAL</a>
-                        </li>
+                       <form action="login/login.php" method="GET">
+                            <?php 
+                            while ($row = $result->fetch_assoc()) { ?>
+                                <li><button  name="tipo" class="btn-menu" type="submit" value="<?php echo $row['id']; ?>"> ACCESO <?php echo $row['tipo']; ?></button></li>
+                            <?php  } ?>
+                        </form>
                     </ul>
                 </li>
             </ul>
