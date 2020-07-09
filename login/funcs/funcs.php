@@ -135,6 +135,34 @@
 			return 0;	
 		}		
 	}
+
+	function registraCliente($rela_persona_cliente){
+		
+		global $mysqli;
+		
+		$stmt = $mysqli->prepare("INSERT INTO cliente (rela_persona_cliente) VALUES(?)");
+		$stmt->bind_param('i', $rela_persona_cliente);
+		
+		if ($stmt->execute()){
+			return $mysqli->insert_id;
+			} else {
+			return 0;	
+		}		
+	}
+
+	function registraProfesional($rela_persona_profesional){
+		
+		global $mysqli;
+		
+		$stmt = $mysqli->prepare("INSERT INTO profesional(rela_persona_profesional) VALUES(?)");
+		$stmt->bind_param('i', $rela_persona_profesional);
+		
+		if ($stmt->execute()){
+			return $mysqli->insert_id;
+			} else {
+			return 0;	
+		}		
+	}
 	
 	function enviarEmail($email, $nombre, $asunto, $cuerpo){
 		

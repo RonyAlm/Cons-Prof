@@ -1,52 +1,8 @@
 <?php
-  include_once('conexion.php');
-
-
-  $profesional=1;
-
-  //HACEMOS UNA CONSULTA A LA TABLA USERS PARA EXTRAERME LAS FILAS Y GUARDAMOS $sentenciauser//
-  $sentenciauser= $base_de_datos->query("SELECT * FROM usuario WHERE rela_tipo = $profesional");
-  //HACEMOS UNA CONSULTA A LA TABLA TIPO_ESTUDIO PARA EXTRAERME LAS FILAS Y GUARDAMOS $sentenciatipoestudio //
-  $sentenciatipoestudio=$base_de_datos->query("SELECT * FROM tipo_estudio WHERE rela_users = $profesional");
-
-  //print_r($sentenciauser);
-  $sentenciapersona= $base_de_datos->query("SELECT * FROM persona");
-  $sentenciaprof= $base_de_datos->query("SELECT * FROM profesional");
-
-  //ALMACENAMOS EN UN ARRAY LA VARIABLE ESTUDIOS COMO PERSONAS.
-  //$estudios= $sentenciatipoestudio->fetchAll(PDO::FETCH_OBJ);
-  $usuario=$sentenciauser->fetchAll(PDO::FETCH_OBJ); // fetchAll devuelve toda la fila de la base de datos
-  $personas=$sentenciapersona->fetchAll(PDO::FETCH_OBJ);
-  $prof=$sentenciaprof->fetchAll(PDO::FETCH_OBJ);
-  //print_r($personas);
-  //RECORREMOS EL ARRAY PERSONAS PARA ASIGNARLE CADA ELEMENTO DELA TABLA A UNA VARIABLE
-  foreach ($usuario as $cosas) {
-    $id_user=$cosas->id_usuario;
-
-    //$descripcionuser=$cosas->descripcion;
-    
-
-  }
-
-  foreach($personas as $persona){
-    $nombreuser=$persona->nombre_persona;
-    $emailuser=$persona->correo_persona;
-    $direccionuser=$persona->direccion;
-    //$fcha_nacuser=$cosas->fcha_nac;
-    $cuiluser=$persona->cuil_persona;
-  }
-  
-  foreach($prof as $profe){
-    $matricula=$profe->matricula;
-    $imagen_user=$profe->imagen_icono;
-    $imagen_titulo= $profe->imagen_titulo;
-    $imagen_matricula= $profe->imagen_matricula;
-    $especialidad= $profe->especialidad;
-  }
-  /*codigo rony
-  session_start();
-   //require '../login/funcs/conexion.php';
-   //require '../login/funcs/funcs.php';
+   //codigo consulta mysqli
+   session_start();
+   require '../login/funcs/conexion.php';
+   require '../login/funcs/funcs.php';
 
    if(!isset($_SESSION['id_usuario'])){
        header("Location: login.php");
@@ -54,10 +10,130 @@
 
    $idUsuario = $_SESSION['id_usuario'];
 
-   $sql = "SELECT id_usuario, nombre_persona FROM usuario,persona WHERE id_usuario = '$idUsuario'";
+   $sql = "SELECT id_usuario, nombre_persona, rela_persona FROM usuario,persona WHERE id_usuario = '$idUsuario'";
    $result = $mysqli->query($sql);
+   $row = $result->fetch_assoc();
+   $relac_per = $row['rela_persona'];
+   
+   //fin consulta mysqli
+   
+   
+   
+   // //codigo consulta PDO
+  include_once('conexion.php');
 
-   $row = $result->fetch_assoc();*/
+
+  
+ 
+  //Consulta General;
+  //HACEMOS UNA CONSULTA A LA TABLA USERS PARA EXTRAERME LAS FILAS Y GUARDAMOS $sentenciauser//
+  $sentenciauser= $base_de_datos->query("SELECT * FROM usuario,persona WHERE id_usuario = $idUsuario 
+                                         AND rela_persona =  $relac_per");
+  $usuario=$sentenciauser->fetchAll(PDO::FETCH_OBJ); // fetchAll devuelve toda la fila de la base de datos
+  foreach ($usuario as $cosas) {
+    $id_user=$cosas->id_usuario;
+    $nombre_usuario=$cosas->nombre_usuario;
+    $rela_tipo=$cosas->rela_tipo;
+    $rela_persona_usuario = $cosas->rela_persona;
+  }
+
+  
+  $sentenciapersona= $base_de_datos->query("SELECT * FROM persona where id_persona = $relac_per");
+  $sentenciaprof= $base_de_datos->query("SELECT * FROM profesional where rela_persona = $relac_per");
+  if($rela_tipo == 1){
+    $sentencia_cliente= $base_de_datos->query("SELECT * FROM cliente");
+  } elseif ($rela_tipo == 2){
+    $sentencia_cliente= $base_de_datos->query("SELECT * FROM cliente where rela_persona = $relac_per");
+  }
+  
+
+    
+     /*$sql_profesional = "SELECT * FROM profesional Where rela_persona= $relac_per";
+     $query_profesional = $base_de_datos->prepare($sql_profesional);
+     $query_profesional->execute();
+     $result_profesional = $query_profesional->fetchAll(PDO::FETCH_ASSOC);
+
+     foreach( $result_profesional as $unprofesional){
+       $id_profesionalUno = $unprofesional['id_profesional'];
+       $matricula_profesionalUno = $unprofesional['matricula'];
+       $especialidad_profesionalUno = $unprofesional['especialidad'];
+       //$profesion_profesionalUno = $unprofesional['descripcion_profesion'];
+       $imagen_tituloUno= $unprofesional['imagen_titulo'];
+       $imagen_matriculaUno= $unprofesional['imagen_matricula'];
+     }*/
+     //echo $id_profesionalUno;
+    //echo $matricula_profesionalUno." ".$especialidad_profesionalUno." ".$profesion_profesionalUno;
+     
+
+     $sql_profesion = "SELECT * FROM profesion";
+     $query_profesion = $base_de_datos->prepare($sql_profesion);
+     $query_profesion->execute();
+     $result_profesion = $query_profesion->fetchAll(PDO::FETCH_ASSOC);
+     
+    
+  
+  $personas=$sentenciapersona->fetchAll(PDO::FETCH_OBJ);
+  $prof=$sentenciaprof->fetchAll(PDO::FETCH_OBJ);
+  $cliente = $sentencia_cliente->fetchAll(PDO::FETCH_OBJ);
+
+  foreach ($cliente as $clientes) {
+    $id_cliente=$clientes->id_cliente;
+    $rela_persona_cliente=$clientes->rela_persona;
+  }
+
+  //print_r($personas);
+  //RECORREMOS EL ARRAY PERSONAS PARA ASIGNARLE CADA ELEMENTO DELA TABLA A UNA VARIABLE
+  
+
+  foreach($personas as $persona){
+    $id_persona=$persona->id_persona;
+    $nombre_persona=$persona->nombre_persona;
+    $apellido_persona=$persona->apellido_persona;
+    $dni_persona=$persona->dni_persona;
+    $correo_persona=$persona->correo_persona;
+    $direccion=$persona->direccion;
+    $cuil_persona=$persona->cuil_persona;
+    $dni_persona=$persona->dni_persona;
+    $imagen_perfil=$persona->imagen_icono;
+  }
+  //echo $id_persona;
+
+  foreach($prof as $profe){
+    $id_profesional=$profe->id_profesional;
+    $matricula=$profe->matricula;
+    $imagen_titulo= $profe->imagen_titulo;
+    $imagen_matricula= $profe->imagen_matricula;
+    $especialidad= $profe->especialidad;
+  }
+
+  
+
+  
+  if( $rela_tipo == 1 ){  
+    //HACEMOS UNA CONSULTA A LA TABLA TIPO_ESTUDIO PARA EXTRAERME LAS FILAS Y GUARDAMOS $sentenciatipoestudio //
+    $sentenciatipoestudio=$base_de_datos->query("SELECT * FROM tipo_estudio Where rela_profesional = $id_profesional");
+    //ALMACENAMOS EN UN ARRAY LA VARIABLE ESTUDIOS COMO PERSONAS.
+    $estudios= $sentenciatipoestudio->fetchAll(PDO::FETCH_OBJ);
+   //echo $id_profesionalUno;
+                 
+  //echo $rela_persona_usuario;
+  //echo $relac_per;
+  $sql_profesional = "SELECT * FROM profesional,profesion Where id_profesional= $id_profesional And rela_profesion= id_profesion";
+     $query_profesional = $base_de_datos->prepare($sql_profesional);
+     $query_profesional->execute();
+     $result_profesional = $query_profesional->fetchAll(PDO::FETCH_ASSOC);
+
+     foreach( $result_profesional as $unprofesional){
+       $id_profesionalUno = $unprofesional['id_profesional'];
+       $matricula_profesionalUno = $unprofesional['matricula'];
+       $especialidad_profesionalUno = $unprofesional['especialidad'];
+       $profesion_profesionalUno = $unprofesional['descripcion_profesion'];
+       $imagen_tituloUno= $unprofesional['imagen_titulo'];
+       $imagen_matriculaUno= $unprofesional['imagen_matricula'];
+     }
+    //echo $id_profesionalUno;
+  } //echo $matricula_profesionalUno." ".$especialidad_profesionalUno." ".$profesion_profesionalUno;
+  echo $id_cliente;
  ?>
 
 <!DOCTYPE html>
@@ -155,7 +231,7 @@
                 <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                 <div class="media-body">
                   <h3 class="dropdown-item-title">
-                    <?php echo "$nombreuser"; ?>
+                    <?php echo $nombre_persona; ?>
                     <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
                   </h3>
                   <p class="text-sm">Call me whenever you can...</p>
@@ -204,7 +280,7 @@
         <ul class="navbar-nav ml-auto mr-0 mr-md-3 my-2 my-md-0">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <?php echo 'Bienvenido '.utf8_decode($row['nombre_persona']).'              '; ?><i class="fas fa-user fa-fw"></i></a>
+                    <?php echo 'Bienvenido '.$nombre_persona.'              '; ?><i class="fas fa-user fa-fw"></i></a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="#">Configuración</a>
                         <a class="dropdown-item" href="perfil.php">Mi perfil</a>
@@ -231,35 +307,67 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img class="img-circle elevation-2" alt="User Image" src="data:image/jpg; base64, <?php echo base64_encode ($imagen_user); ?> "/>
+            <img class="img-circle elevation-2" alt="User Image" src="data:image/jpg; base64, <?php echo base64_encode ($imagen_perfil); ?> "/>
           </div>
           <div class="info">
-            <a href="perfil.php" class="d-block"><?php echo "$nombreuser"; ?></a>
+            <a href="perfil.php" class="d-block"><?php  echo $nombre_persona." ".$apellido_persona; ?></a>
           </div>
         </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <!-- Add icons to the links using the .nav-icon class
-                 with font-awesome or any other icon font library -->
+            <?php 
+                 if( $rela_tipo == 1 ){
+                  
+            ?>
+
             <li class="nav-item">
               <a href="starter.php" class="nav-link">
-                <i class=" fas fa-tachometer-alt"> </i>
+                <i class="nav-icon fas fa-th"> </i>
                 <p>
                   Administrar Consultas
                 </p>
               </a>
-
             </li>
+            
             <li class="nav-item">
-              <a href="perfil.php" class="nav-link active">
-                <i class="nav-icon fas fa-th"> </i>
+              <a href="data.php" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
-                  Perfil
+                  Consultas Pendientes
                 </p>
               </a>
             </li>
+
+            <?php } ?>
+
+            <?php 
+                 if( $rela_tipo == 2 ){
+                  
+            ?>
+            <li class="nav-header">SERVICIO DISPONIBLE</li>
+
+            <li class="nav-item has-treeview">
+                <a href="calendar.php" class="nav-link">
+                  <i class="nav-icon far fa-calendar-alt"></i>
+                  <p>
+                    Agendar turno
+                  </p>
+                </a>
+            </li>
+            
+            </li>
+            <li class="nav-item">
+              <a href="data_cliente.php" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                  Consultas Pendientes
+                </p>
+              </a>
+            </li>
+            <?php } ?>
+
           </ul>
         </nav>
         <!-- /.sidebar-menu -->
@@ -278,8 +386,14 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Casa</a></li>
+              <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+              <?php 
+                 if( $rela_tipo == 1 ){
+              ?>
               <li class="breadcrumb-item active">Perfil del Profesional</li>
+              <?php } elseif( $rela_tipo == 2 ){ ?>
+              <li class="breadcrumb-item active">Perfil del Cliente</li>
+              <?php } ?>
             </ol>
           </div>
         </div>
@@ -300,20 +414,23 @@
                        src="dist/img/user4-128x128.jpg"
                        alt="User profile picture"> -->
 
-                       <img id="avatar2" class="profile-user-img img-fluid img-circle" src="data:image/jpg; base64, <?php echo base64_encode ($imagen_user); ?> "/>
+                       <img id="avatar2" class="profile-user-img img-fluid img-circle" src="data:image/jpg; base64, <?php echo base64_encode ($imagen_perfil); ?> "/>
 
 
                 </div>
 
 
 
-                <h3 class="profile-username text-center"><?php echo $nombreuser?></h3>
+                <h3 class="profile-username text-center"><?php 
+                          echo $nombre_persona." ".$apellido_persona;
+                
+                 ?></h3>
 
               </div>
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
-
+              
             <!-- About Me Box -->
             <div class="card card-primary">
               <div class="card-header">
@@ -321,33 +438,38 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-
+                <?php 
+                  if( $rela_tipo == 1 ){
+                ?>
                 <strong><i class="fas fa-book mr-1"></i> Educación</strong>
                 <?php foreach ($estudios as $nombreestudios) { ?>
                   <p class="text-muted">
-                    <span class="tag tag-danger"><?php echo $nombreestudios->tipos_estudio?></span>
+                    <span class="tag tag-danger"><?php echo $nombreestudios->descrip_tipo_estudio?></span>
                   </p>
-                <?php  } ?>
+                <?php  } } ?>
 
 
                 <hr>
 
                 <strong><i class="fas fa-map-marker-alt mr-1"></i> Ubicación</strong>
 
-                <p class="text-muted"><?php echo $direccionuser ?></p>
+                <p class="text-muted"><?php echo $direccion; ?></p>
 
                 <hr>
-
+                <?php 
+                  if( $rela_tipo == 1 ){
+                ?>
                 <strong><i class="fas fa-pencil-alt mr-1"></i> Especialidad</strong>
 
                 <p class="text-muted">
-                  <span class="tag tag-danger"><?php echo $especialidad ?></span>
+                  <span class="tag tag-danger"><?php echo $especialidad_profesionalUno;?></span>
                 </p>
-
+                <?php } ?>
 
               </div>
               <!-- /.card-body -->
             </div>
+                
             <!-- /.card -->
           </div>
           <!-- /.col -->
@@ -356,7 +478,11 @@
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link active" href="#perfil" data-toggle="tab">Perfil</a></li>
+                  <?php 
+                  if( $rela_tipo == 1 ){
+                  ?>
                   <li class="nav-item"><a class="nav-link " href="#timeline" data-toggle="tab">Estudios</a></li>
+                  <?php } ?>
                   <li class="nav-item"><a class="nav-link " href="#settings" data-toggle="tab">Configuración</a></li>
                 </ul>
               </div><!-- /.card-header -->
@@ -367,61 +493,82 @@
 
               <div class="card-body">
                 <div class="tab-content">
-                  <?php foreach ($personas as $persona) {?>
+                
                   <div class="active tab-pane" id="perfil">
                     <form class="form-horizontal">
                       <div class="form-group row">
-                        <label for="" class="col-sm-2 col-form-label">Name</label>
+                        <label for="" class="col-sm-2 col-form-label">Nombre</label>
                         <div class="col-sm-10">
-                          <?php echo $persona->name?>
+                          <?php echo $nombre_persona." ".$apellido_persona; ?>
                         </div>
                       </div>
                       <hr>
                       <div class="form-group row">
                         <label for="" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
-                          <?php echo $persona->email?>
+                          <?php echo $correo_persona; ?>
                         </div>
                       </div>
                       <hr>
+                      <?php 
+                       if( $rela_tipo == 1 ){
+                      ?>
                       <div class="form-group row">
                         <label for="" class="col-sm-2 col-form-label">Especialidad</label>
                         <div class="col-sm-10">
-                          <?php echo $persona->especialidad?>
+                          <?php echo $especialidad_profesionalUno?>
                         </div>
                       </div>
                       <hr>
+                      <?php } ?>
+                      
+
                       <div class="form-group row">
-                        <label for="" class="col-sm-2 col-form-label">Fecha de Nacimiento</label>
+                        <label for="" class="col-sm-2 col-form-label">Dni</label>
                         <div class="col-sm-10">
-                          <?php echo $persona->fcha_nac?>
+                          <?php echo $dni_persona ?>
                         </div>
                       </div>
+                      
                       <hr>
                       <div class="form-group row">
                         <label for="" class="col-sm-2 col-form-label">Cuil</label>
                         <div class="col-sm-10">
-                          <?php echo $persona->cuil?>
+                          <?php echo $cuil_persona ?>
+                        </div>
+                      </div>
+                      <hr>
+
+                      <?php 
+                       if( $rela_tipo == 1 ){
+                      ?>
+                      <div class="form-group row">
+                        <label for="" class="col-sm-2 col-form-label">Profesion</label>
+                        <div class="col-sm-10">
+                          <?php echo $profesion_profesionalUno?>
                         </div>
                       </div>
                       <hr>
                       <div class="form-group row">
                         <label for="" class="col-sm-2 col-form-label">Matrícula</label>
                         <div class="col-sm-10">
-                          <?php echo $persona->matricula?>
+                          <?php echo $matricula?>
                         </div>
                       </div>
                       <hr>
+                      <?php } ?>
+
+                      
                       <div class="form-group row">
                         <label for="" class="col-sm-2 col-form-label">Dirección</label>
                         <div class="col-sm-10">
-                          <?php echo $persona->direccion?>
+                          <?php echo $direccion?>
                         </div>
                       </div>
 
                     </form>
                   </div>
-                  <?php   }?>
+                  
                   <!-- FIN DEL RECORRIDO DEL FOREACH -->
 
 
@@ -445,7 +592,7 @@
 
                         <div class="timeline-item">
 
-                          <h3 class="timeline-header">Estudios: <?php echo $estudio->tipos_estudio ?></h3>
+                          <h3 class="timeline-header">Estudios: <?php echo $estudio->descrip_tipo_estudio ?></h3>
 
 
                           <div class="timeline-body">
@@ -470,13 +617,13 @@
 
                           <div class="timeline-body">
                             <form class="ace-thumbnails clearfix">
-
-          											<a href="/plantilla-consprof/imagenes_servidor/<?php echo $imagen_titulo; ?>" data-rel="colorbox">
-          												<img width="150" height="150" alt="150x150" src="/plantilla-consprof/imagenes_servidor/<?php echo $imagen_titulo; ?>" />
+                            
+          											<a href="/Programacion_Web/ConsProf/plantilla-consprof/imagenes_servidor/<?php echo $imagen_titulo; ?>" data-rel="colorbox">
+          												<img width="150" height="150" alt="150x150" src="/Programacion_Web/ConsProf/plantilla-consprof/imagenes_servidor/<?php echo $imagen_titulo; ?>" />
           											</a>
 
-          											<a  href="/plantilla-consprof/imagenes_servidor/<?php echo $imagen_matricula; ?>"  data-rel="colorbox">
-          												<img width="150" height="150" alt="150x150" src="/plantilla-consprof/imagenes_servidor/<?php echo $imagen_matricula; ?>" />
+          											<a  href="/Programacion_Web/ConsProf/plantilla-consprof/imagenes_servidor/<?php echo $imagen_matricula; ?>"  data-rel="colorbox">
+          												<img width="150" height="150" alt="150x150" src="/Programacion_Web/ConsProf/plantilla-consprof/imagenes_servidor/<?php echo $imagen_matricula; ?>" />
           											</a>
 
 
@@ -496,38 +643,57 @@
                        VARIABLE QUE LE CORESPONDE (ESA VARIABLE SE ENCUENTRA DENTRO DEL FOREACH QUE ESTA AL PRINCIPIO DEL PHP PERFIL.PHP)-->
                   <div class="tab-pane" id="settings">
                     <form class="form-horizontal" action="administrar_perfil.php"  method="POST">
-                      <input type="hidden" name="id_user" value="<?php echo $id_user?>">
-                      <input type="hidden" name="descripcion_user" value="<?php echo $descripcionuser?>" required>
+                      <input type="hidden" name="id_user" value="<?php echo $id_persona?>">
+                      <input type="hidden" name="id_profesional" value="<?php echo $id_profesional?>">
+                      <input type="hidden" name="rela_tipo" value="<?php echo $rela_tipo?>">
+                      <!--<input type="hidden" name="descripcion_user" value="<?php //echo $descripcionuser?>" required>-->
                       <div class="form-group row">
                         <label for="inputName" class="col-sm-2 col-form-label">Nombre</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" name="nombre" value="<?php echo $nombreuser?>" required>
+                          
+                          <input type="text" class="form-control" name="nombre" value="<?php     echo $nombre_persona;
+                    
+                          ?>" required>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label for="apellido" class="col-sm-2 col-form-label">Apellido</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" name="apellido" value="<?php echo $apellido_persona?>" required>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
-                          <input type="email" class="form-control" name="email" value="<?php echo $emailuser?>" required>
+                          <input type="email" class="form-control" name="email" value="<?php echo $correo_persona ?>" required>
                         </div>
                       </div>
+                      <?php 
+                       if( $rela_tipo == 1 ){
+                      ?>
                       <div class="form-group row">
                         <label for="inputName2" class="col-sm-2 col-form-label">Especialidad</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" name="edad" value="<?php echo $especialidad?>" required>
+                          <input type="text" class="form-control" name="especialidad" value="<?php echo $especialidad; ?>" required>
                         </div>
                       </div>
+                      <?php } ?>
+                  
                       <div class="form-group row">
-                        <label for="inputExperience" class="col-sm-2 col-form-label">Fecha de Nacimiento</label>
+                        <label for="inputExperience" class="col-sm-2 col-form-label">Dni</label>
                         <div class="col-sm-10">
-                          <input type="date" class="form-control" name="fecha_nac" value="<?php echo $fcha_nacuser?>" required>
+                          <input type="text" class="form-control" name="dni"  value="<?php echo $dni_persona?>" required>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="inputExperience" class="col-sm-2 col-form-label">Cuil</label>
                         <div class="col-sm-10">
-                          <input type="number" class="form-control" name="cuil"  value="<?php echo $cuiluser?>" required>
+                          <input type="text" class="form-control" name="cuil"  value="<?php echo $cuil_persona?>" required>
                         </div>
                       </div>
+                      <?php 
+                       if( $rela_tipo == 1 ){
+                      ?>
                       <div class="form-group row">
                         <label for="inputExperience" class="col-sm-2 col-form-label">Matrícula</label>
                         <div class="col-sm-10">
@@ -535,9 +701,24 @@
                         </div>
                       </div>
                       <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Profesion: </label>
+                          <div class="col-sm-10">
+                            <select  name="profesion" id="select_profesion" class="form-control select2bs4">
+                            <option selected="selected"><?php echo $profesion_profesionalUno; ?></option>
+                            <?php 
+                              foreach($result_profesion as $fila){
+                            ?>
+                              <option value="<?php echo $fila['id_profesion']; ?>"><?php echo $fila['descripcion_profesion']; ?></option>
+                              
+                            <?php } ?>
+                            </select>
+                          </div>
+                      </div>
+                      <?php } ?>
+                      <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Dirección</label>
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" name="direccion" value="<?php echo $direccionuser?>" required>
+                          <input type="text" class="form-control" name="direccion" value="<?php echo $direccion?>" required>
                         </div>
                       </div>
                       <div class="form-group row">
@@ -549,9 +730,11 @@
                       </div>
                     </form>
                     <!-- FIN DEL FORMULARIO CONFIGURACION -->
-
+                      <?php 
+                       if( $rela_tipo == 1 ){
+                      ?>
                     <form class="form-horizontal" action="administrar_perfil.php" method="post">
-                      <input type="hidden" name="id_user" value="<?php echo $id_user?>">
+                      <input type="hidden" name="id_user" value="<?php echo $id_profesional?>">
                     <div class="card card-primary">
                       <div class="card-header">
                         <h3 class="card-title">Sobre mí</h3>
@@ -600,10 +783,10 @@
                       <!-- /.card-body -->
                     </div>
                   </form>
+                  
 
-
-                  <form class="form-horizontal" action="datos_perfil.php" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="id_user" value="<?php echo $id_user?>">
+                  <form class="form-horizontal" action="administrar_perfil.php" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="id_user" value="<?php echo $id_profesional?>">
                     <div class="card card-primary">
                       <div class="card-header">
                         <h3 class="card-title">Imagenes</h3>
@@ -631,6 +814,7 @@
                     </div>
 
                   </form>
+                  <?php } ?>
                   <!-- /.tab-pane -->
                 </div>
                 <!-- /.tab-content -->
@@ -689,14 +873,24 @@
 <!-- SweetAlert2 -->
 <script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
 
+
 <!-- page specific plugin scripts -->
-<script src="assets/js/jquery.colorbox.min.js"></script>
+<script src="assets/js/jquery.colorbox.min.js"></>
+<script >
+   $(document).ready(function() {
+          //Initialize Select2 Elements
+      $('.select2').select2()
 
+      //Initialize Select2 Elements
+      $('.select2bs4').select2({
+        theme: 'bootstrap4'
+      })
+   });
+</script>
 
-<script>
-
-  $(function () {
-    //Initialize Select2 Elements
+<script >
+     $(document).ready(function() {
+        //Initialize Select2 Elements
     $('.select2').select2()
 
     //Initialize Select2 Elements
@@ -765,33 +959,33 @@
       $(this).bootstrapSwitch('state', $(this).prop('checked'));
     });
 
-  });
+    });
 
 
-  $('#avatar2').on('click', function(){
+    $('#avatar2').on('click', function(){
     var modal =
     '<div class="modal fade">\
       <div class="modal-dialog">\
-       <div class="modal-content">\
+      <div class="modal-content">\
       <div class="modal-header">\
         <button type="button" class="close" data-dismiss="modal">&times;</button>\
         <h4 class="blue">Editar Imagen</h4>\
       </div>\
       \
       <form class="no-margin" method="POST" action="administrar_perfil.php" enctype="multipart/form-data">\
-       <div class="modal-body">\
-       <input type="hidden" name="id_user" value="<?php echo $id_user?>">\
+      <div class="modal-body">\
+      <input type="hidden" name="id_user" value="<?php echo $id_persona?>">\
         <div class="space-4"></div>\
         <div style="width:75%;margin-left:12%;"><input type="file" name="imagen" /></div>\
-       </div>\
+      </div>\
       \
-       <div class="modal-footer center">\
+      <div class="modal-footer center">\
         <button type="submit" class="btn btn-sm btn-success" name="actualizar_iconos"><i class="ace-icon fa fa-check"></i> Editar</button>\
         <button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i> Cancelar</button>\
-       </div>\
+      </div>\
       </form>\
       </div>\
-     </div>\
+    </div>\
     </div>';
 
 
@@ -847,10 +1041,9 @@
 
       return false;
     });
-
-  });
-
+     })
 </script>
+
 
     <script type="text/javascript">
           jQuery(function($) {

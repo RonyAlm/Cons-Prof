@@ -5,36 +5,44 @@
   // actualizamos los datos que se encuentra en el FORMULARIO del perfil
 
 if (isset($_POST["actualizar_datos"])) {
+  
+     $tipo_usuario=$_POST["rela_tipo"];
+     $id_profesion=$_POST["profesion"];
+     $id_profesional=$_POST["id_profesional"];
+     $id_persona=$_POST["id_user"];
+     $nombre_user=$_POST["nombre"];
+     $apellido_user=$_POST["apellido"];
+     $email_user=$_POST["email"];
+     $especialidad=$_POST["especialidad"];
+     $dni=$_POST["dni"];
+     $cuil_user=$_POST["cuil"];
+     $matricula_user=$_POST["matricula"];
+     $direccion_user=$_POST["direccion"];
+     
 
-    $id_user=$_POST["id_user"];
+    echo $id_profesion;
+    echo $id_profesional;
 
-    $id_user=$_POST["id_user"];
-    $nombre_user=$_POST["nombre"];
-    $email_user=$_POST["email"];
-    $especialidad=$_POST["edad"];
-    $fecha_nac_user=$_POST["fecha_nac"];
-    $cuil_user=$_POST["cuil"];
-    $matricula_user=$_POST["matricula"];
-    $direccion_user=$_POST["direccion"];
-    $descripcion_user=$_POST["descripcion_user"];
-
-
-
-  $sentencia= $base_de_datos->query("UPDATE `users` SET `name`='$nombre_user',
-                                            `email`='$email_user',
-                                            `especialidad`='$especialidad',
+  $sentencia= $base_de_datos->query("UPDATE `persona` SET `nombre_persona`='$nombre_user',
+                                            `apellido_persona`='$apellido_user',
+                                            `correo_persona`='$email_user',
                                             `direccion`='$direccion_user',
-                                            `fcha_nac`='$fecha_nac_user',
-                                            `cuil`='$cuil_user',
-                                            `matricula`='$matricula_user'
-
-                                     WHERE `id`=$id_user");
-
+                                            `dni_persona`='$dni',
+                                            `cuil_persona`='$cuil_user' where `id_persona` = '$id_persona'");
+  if($tipo_usuario == 1){
+    $sentencia2= $base_de_datos->query("UPDATE `profesional` SET  `matricula`='$matricula_user',`especialidad`='$especialidad',`rela_profesion`= $id_profesion WHERE `rela_persona` =  $id_persona AND id_profesional = $id_profesional");
+  }
+  
+  
+  //$sentencia2= $base_de_datos->query("UPDATE `cliente` SET  `matricula`='$matricula_user',`especialidad`='$especialidad',`rela_profesion`= $id_profesion WHERE `rela_persona` =  $id_persona AND id_profesional = $id_profesional");
+   //var_dump($sentencia2);
+ 
 
     if ($sentencia) {
-
+      
       echo "datos actualizados";
       header('location:perfil.php');
+      //print_r ($sentencia);
     }else {
       // header('location:perfil.php');
       echo "datos no actualizados";
@@ -47,7 +55,7 @@ if (isset($_POST["actualizar_datos"])) {
 
    if (isset($_POST['agregar_estudios'])) {
 
-     $id_user=$_POST['id_user'];
+     $id_profesional=$_POST['id_user'];
 
      $tipos_estudioss= $_POST['estudios'];
 
@@ -57,18 +65,18 @@ if (isset($_POST["actualizar_datos"])) {
 
 
 
-     $sql= "INSERT INTO tipo_estudio (tipos_estudio, nombre_institucion, fecha_des_has, rela_users)
-            VALUES(:tipos_estudio, :nombre_institucion, :fecha_des_has, :rela_users)";
+     $sql= "INSERT INTO tipo_estudio (descrip_tipo_estudio, nombre_institucion, fecha_des_has, rela_profesional)
+            VALUES(:descrip_tipo_estudio, :nombre_institucion, :fecha_des_has, :rela_profesional)";
 
       $resultado= $base_de_datos->prepare($sql);
 
-      $resultado->execute(array(':tipos_estudio'=>$tipos_estudioss, ':nombre_institucion'=>$nombre_institucion,
-                                ':fecha_des_has'=>$fecha_des_has, ':rela_users'=>$id_user));
+      $resultado->execute(array(':descrip_tipo_estudio'=>$tipos_estudioss, ':nombre_institucion'=>$nombre_institucion,
+                                ':fecha_des_has'=>$fecha_des_has, ':rela_profesional'=>$id_profesional));
 
       if ($resultado) {
         echo "<script> alert('DATOS ACTUALIZADOS'); </script>";
 
-        // print_r($resultado);
+         //print_r($resultado);
         header('Location:perfil.php');
       }else {
         echo "<script> alert('DATOS NO ACTUALIZADOS'); </script>";
@@ -100,7 +108,8 @@ if (isset($_POST["actualizar_datos"])) {
 
 
        //RUTA DE LA CARPETA DESTINO EN EL SERVIDOR DONDE VAMOS A GUARDAR LAS IMAGENES
-       $carpeta_destino= $_SERVER['DOCUMENT_ROOT'] . '/plantilla-consprof/imagenes_servidor/';
+       
+       $carpeta_destino= $_SERVER['DOCUMENT_ROOT'] . '/Programacion_Web/ConsProf/plantilla-consprof/imagenes_servidor/';
 
 
        // MOVEMOS LA IMAGEN DEL DIRECTORIO TEMPORAR AL DIRECTORIO ESCOGIDO
@@ -116,9 +125,9 @@ if (isset($_POST["actualizar_datos"])) {
        echo "El tamaño de la imagen es demasiado grande";
      }
 
-     $sql= "UPDATE `users` SET `imagen_titulo`='$nombre_imagen1',
+     $sql= "UPDATE `profesional` SET `imagen_titulo`='$nombre_imagen1',
                               `imagen_matricula`= '$nombre_imagen2'
-            WHERE id= '$id_user'";
+            WHERE id_profesional= '$id_user'";
 
      $resultado= $base_de_datos->query($sql);
 
@@ -153,9 +162,9 @@ if (isset($_POST["actualizar_datos"])) {
 
 
 
-  $sentencia_imagen= $base_de_datos->query("UPDATE `users` SET `imagen_icono`='$imagen'
+  $sentencia_imagen= $base_de_datos->query("UPDATE `persona` SET `imagen_icono`='$imagen'
 
-                                     WHERE `id`=$id_user");
+                                     WHERE `id_persona`=$id_user");
 
   if ($sentencia_imagen) {
     echo "se agrego la imagen";
@@ -167,6 +176,68 @@ if (isset($_POST["actualizar_datos"])) {
 }else {
    echo "Solo se pueden subir imagenes jpg/jpeg/png/gif";
 }
+
+}
+
+// crear sala
+
+if (isset($_POST['nombre_sala'])) {
+
+  $nombre_sala=$_POST["nombre_salas"];
+  $id_cliente=$_POST["id_cliente"];
+  $id_profesional=$_POST["id_profesional"];
+
+
+
+  $sentencia_sala= "INSERT INTO `sala`(`nombre_sala`, `rela_cliente_sala`, `rela_profesional_sala`)
+         VALUES(:nombre_sala, :rela_cliente, :rela_profesional)";
+
+   $resultado= $base_de_datos->prepare($sentencia_sala);
+
+   $resultado->execute(array(':nombre_sala'=>$nombre_sala,
+                             ':rela_cliente_sala'=>$id_cliente, ':rela_profesional_sala'=>$id_profesional));
+
+   if ($resultado) {
+     echo "<script> alert('DATOS ACTUALIZADOS'); </script>";
+
+     // print_r($resultado);
+     header('Location: proyecto_conprof/public_html/index.php');
+   }else {
+     echo "<script> alert('DATOS NO ACTUALIZADOS'); </script>";
+   }
+
+   $resultado->closeCursor();
+
+// Ingresar sala del cliente
+}
+
+if (isset($_POST['ingresar_sala'])) {
+
+  $entrar_sala=$_POST["entrar_sala"];
+  $id_cliente=$_POST["id_cliente"];
+  $id_profesional=$_POST["id_profesional"];
+
+
+  $sentencia_sala=$base_de_datos->query("SELECT `id_sala`, `nombre_sala`, `rela_cliente_sala`, `rela_profesional_sala`
+                                         FROM `sala`
+                                         WHERE `rela_cliente_sala`=$id_cliente AND `rela_profesional_sala`= $id_profesional");
+
+  $sala=$sentencia_sala->fetchAll(PDO::FETCH_OBJ);
+
+  foreach ($sala as $key) {
+
+    $id_sala=$key->id_sala;
+    $rela_cliente=$key->rela_cliente;
+    $nombre_sala=$key->nombre_sala;
+    $rela_profesional=$key->rela_profesional;
+  }
+   if ($nombre_sala == $entrar_sala) {
+     echo "<script> alert('DATOS ACTUALIZADOS'); </script>";
+
+     header("Location: https://meet.jit.si/$entrar_sala");
+   }else {
+     echo "<script> alert('DATOS NO ACTUALIZADOS'); </script>";
+   }
 
 }
 

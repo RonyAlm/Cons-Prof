@@ -1,0 +1,10 @@
+.cajaConsulta{
+    background-color: #ccc;
+    font-weight: bold;
+    color: blue;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px 1px gray inset;
+    
+}

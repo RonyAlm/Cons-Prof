@@ -43,6 +43,16 @@ if(!empty($_POST)){ //Para validar si se envia el POST
    if(emailExiste($email)){
     $errors[] = "El correo electronico $email ya existe";
    }
+   
+   /*
+        INSERT INTO `persona`
+            (`id_persona`, `nombre_persona`, `apellido_persona`, `dni_persona`, `correo_persona`, `cuil_persona`, `direccion`, `imagen_icono`)
+            VALUES (null,'nico','villalba',352635,'nico@gmail.com','4638364','c4',null);
+        INSERT INTO `usuario`(`id_usuario`, `nombre_usuario`, `password`, `last_session`, `activacion`, `token`, `token_password`, `password_request`, `rela_tipo`, `rela_persona`)
+            VALUES (null,'nico','sd',null,1,'sa',1,1,1,18);
+        INSERT INTO `profesional`(`id_profesional`, `rela_persona`, `matricula`, `imagen_titulo`, `imagen_matricula`, `especialidad`, `rela_profesion`, `rela_tipo_usuario`) 
+            VALUES (null,18,'3243',null,null,'flat',1,1);
+   */ 
 
    //Para contar si hay errores
    if(count($errors) == 0){
@@ -57,8 +67,14 @@ if(!empty($_POST)){ //Para validar si se envia el POST
       $pass_hash = hashPassword($password);
       $token = generateToken();
       $persona = $mysqli->insert_id;
+      
       $registro = registraUsuario($usuario, $pass_hash,$activo, $token, $tipo_usuario, $persona);
-	  
+      if($tipo_usuario == 1){
+        $registroProf = $mysqli->query("INSERT INTO profesional(id_profesional, rela_persona,matricula, imagen_titulo, imagen_matricula, especialidad, rela_profesion) VALUES(null,'$persona',null,null, null,null,null)");
+      } elseif($tipo_usuario == 2){
+        $registroCli = $mysqli->query("INSERT INTO cliente(id_cliente, rela_persona) VALUES(null,'$persona')");
+      }
+	  //echo $usuario;
 	  //$registro = $mysqli->query("INSERT INTO usuario (nombre_usuario, password, nombre, correo, activacion, token, rela_tipo, rela_persona) VALUES('$usuario','$password','$nombre','$email','$activo', '$token', '$tipo_usuario','$mysqli->insert_id')");
 
 				
@@ -72,10 +88,11 @@ if(!empty($_POST)){ //Para validar si se envia el POST
         $cuerpo = "Estimado $nombre: <br/><br/> Para continuar con el proceso de registro, de Click en la siguiente enlace <a href = '$url'> Activar Cuenta</a>";
         
          if (enviarEmail($email, $nombre, $asunto, $cuerpo)){
-             //header("location: principal-cliente.php"); Agregar despues en otro documento
-            echo "Para terminar el proceso de registro siga las intrucciones que le hemos enviado la
-            la direccion de correo electronico: $email"; 
-            echo "<br><a href='login.php'>Iniciar Sesion</a>";
+             header("location: login.php"); 
+            //echo "Para terminar el proceso de registro siga las intrucciones que le hemos enviado la
+            //la direccion de correo electronico: $email"; 
+            //echo "<br><a href='login.php'>Iniciar Sesion</a>";
+            
             exit;
         } else {
              $errors[] = "Error al enviar Email";
@@ -109,6 +126,7 @@ if(!empty($_POST)){ //Para validar si se envia el POST
         <meta name="author" content="" />
         <title>Acceso Cliente</title>
         <link href="css/styles.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
         <script src='https://www.google.com/recaptcha/api.js'></script>
     </head>
@@ -181,7 +199,7 @@ if(!empty($_POST)){ //Para validar si se envia el POST
                                                 </div>
                                             </div>
                                             <div class="form-group mt-4 mb-0">
-                                                <button class="btn btn-primary btn-block" type = "submit" >Registrar</button>
+                                                <button id= "registrar" class="btn btn-primary btn-block" type = "submit" >Registrar</button>
                                             </div>
                                         </form>
                                         <?php echo resultBlock($errors); ?>
@@ -213,5 +231,26 @@ if(!empty($_POST)){ //Para validar si se envia el POST
         <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
+        
+        <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
+       <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+       
+
+        <script>
+        $('#registrar').click(function() {
+        
+
+            Swal.fire({
+            position: 'center',
+            icon: 'info',
+            title: 'Para terminar el proceso de registro siga las intrucciones que le hemos enviado a la direccion de correo electronico',
+            showConfirmButton: true
+
+            })
+        
+        })
+
+
+        </script>
     </body>
 </html>
