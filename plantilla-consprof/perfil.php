@@ -314,7 +314,7 @@
           </div>
         </div>
 
-        <!-- Sidebar Menu -->
+        <!-- Sidebar Menu fa-video es para icono de la camara-->
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <?php 
@@ -324,7 +324,7 @@
 
             <li class="nav-item">
               <a href="starter.php" class="nav-link">
-                <i class="nav-icon fas fa-th"> </i>
+                <i class="nav-icon fas fa-wrench"> </i>
                 <p>
                   Administrar Consultas
                 </p>
@@ -333,7 +333,7 @@
             
             <li class="nav-item">
               <a href="data.php" class="nav-link">
-                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <i class="nav-icon fas fa-clock"></i>
                 <p>
                   Consultas Pendientes
                 </p>
@@ -360,7 +360,7 @@
             </li>
             <li class="nav-item">
               <a href="data_cliente.php" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
+                <i class="nav-icon fas fa-clock"></i>
                 <p>
                   Consultas Pendientes
                 </p>

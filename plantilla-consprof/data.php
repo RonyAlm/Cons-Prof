@@ -197,64 +197,7 @@
 
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
-        <!-- Messages Dropdown Menu -->
-        <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="far fa-comments"></i>
-            <span class="badge badge-danger navbar-badge">3</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    <?php echo $nombre_persona; ?>
-                    <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">Call me whenever you can...</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    John Pierce
-                    <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">I got your message bro</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <!-- Message Start -->
-              <div class="media">
-                <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                <div class="media-body">
-                  <h3 class="dropdown-item-title">
-                    Nora Silvester
-                    <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                  </h3>
-                  <p class="text-sm">The subject goes here</p>
-                  <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                </div>
-              </div>
-              <!-- Message End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-          </div>
-        </li>
+        
         <!--Codigo Rony-->
         <ul class="navbar-nav ml-auto mr-0 mr-md-3 my-2 my-md-0">
                 <li class="nav-item dropdown">
@@ -296,80 +239,27 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <?php 
-                 if( $rela_tipo == 1 ){
-                  
-            ?>
+            
 
             <li class="nav-item">
               <a href="starter.php" class="nav-link">
-                <i class=" fas fa-tachometer-alt"> </i>
+                <i class="nav-icon fas fa-wrench"> </i>
                 <p>
                   Administrar Consultas
                 </p>
               </a>
             </li>
-            <?php } ?>
-
-            <!--<li class="nav-item">
-              <a href="perfil.php" class="nav-link active">
-                <i class="nav-icon fas fa-th"> </i>
-                <p>
-                  Perfil
-                </p>
-              </a>
-            </li>-->
-
-            <li class="nav-header">SERVICIO DISPONIBLE</li>
-
-            <li class="nav-item has-treeview">
-                <a href="calendar.php" class="nav-link">
-                  <i class="nav-icon far fa-calendar-alt"></i>
-                  <p>
-                    Agendar turno
-                  </p>
-                </a>
-            </li>
-
-            </li>
-
-            <li class="nav-item">
-              <a href="cliente.php" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  Cliente
-
-                </p>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="modals.php" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  Atender
-
-                </p>
-              </a>
-            </li>
+            
 
             <li class="nav-item">
               <a href="data.php" class="nav-link active">
-                <i class="nav-icon fas fa-th"></i>
+                <i class="nav-icon fas fa-clock"></i>
                 <p>
                   Consultas Pendientes
                 </p>
               </a>
             </li>
             
-            <li class="nav-item">
-              <a href="data_cliente.php" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  Consultas Cliente
-                </p>
-              </a>
-            </li>
 
           </ul>
         </nav>

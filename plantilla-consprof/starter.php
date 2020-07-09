@@ -258,7 +258,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             ?>
             <li class="nav-item">
               <a href="starter.php" class="nav-link active">
-                <i class=" fas fa-tachometer-alt"> </i>
+                <i class="nav-icon fas fa-wrench"> </i>
                 <p>
                   Administrar Consultas
                 </p>
@@ -266,43 +266,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </li>
             <?php  }  ?>
             
-            <li class="nav-item">
-              <a href="cliente.php" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  Cliente
+        
 
-                </p>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="modals.php" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  Atender
-
-                </p>
-              </a>
-            </li>
 
             <li class="nav-item">
               <a href="data.php" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
+                <i class="nav-icon fas fa-clock"></i>
                 <p>
                   Consultas Pendientes
                 </p>
               </a>
             </li>
 
-            <li class="nav-item">
-              <a href="data_cliente.php" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  Consultas Cliente
-                </p>
-              </a>
-            </li>
+            
 
           </ul>
         </nav>
