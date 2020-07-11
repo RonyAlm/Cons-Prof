@@ -114,7 +114,7 @@
   AND id_tipo_consulta=rela_tipo_consulta 
   AND turnos.rela_cliente_turno = cliente.id_cliente 
   AND persona.id_persona = cliente.rela_persona '; */
- echo $id_profesional;
+ //echo $id_profesional;
  $sentenciadata= $base_de_datos->query("SELECT turnos.id, persona.nombre_persona, turnos.start , turnos.end, consulta.descripcion_consulta, tipo_consulta.descripcio_tipo_consulta, consulta.precio_consulta 
                                         FROM turnos,profesional, persona,consulta,cliente, tipo_consulta 
                                         WHERE turnos.rela_profesional_turno= $id_profesional 
@@ -249,6 +249,14 @@
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             
+            <li class="nav-item has-treeview">
+                <a href="inicio.php" class="nav-link">
+                  <i class="nav-icon fas fa-home"></i>
+                  <p>
+                    Inicio
+                  </p>
+                </a>
+            </li>
 
             <li class="nav-item">
               <a href="starter.php" class="nav-link">
@@ -267,6 +275,15 @@
                   Consultas Pendientes
                 </p>
               </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-box"></i>
+                  <p>
+                    Consultas rapidas
+                  </p>
+                </a>
             </li>
             
 
@@ -311,7 +328,7 @@
                               <thead class="text-center">
                                   <tr>
                                       <th>id</th>
-                                      <th>Profesional</th>
+                                      <th>Cliente</th>
                                       <th>Consulta</th>
                                       <th>Nombre de Consulta</th>
                                       <th>Precio</th>

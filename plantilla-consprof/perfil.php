@@ -118,7 +118,7 @@
                  
   //echo $rela_persona_usuario;
   //echo $relac_per;
-  $sql_profesional = "SELECT * FROM profesional,profesion Where id_profesional= $id_profesional And rela_profesion= id_profesion";
+     $sql_profesional = "SELECT * FROM profesional,profesion Where id_profesional= $id_profesional And profesional.rela_profesion = id_profesion";
      $query_profesional = $base_de_datos->prepare($sql_profesional);
      $query_profesional->execute();
      $result_profesional = $query_profesional->fetchAll(PDO::FETCH_ASSOC);
@@ -133,7 +133,7 @@
      }
     //echo $id_profesionalUno;
   } //echo $matricula_profesionalUno." ".$especialidad_profesionalUno." ".$profesion_profesionalUno;
-  
+ 
  ?>
 
 <!DOCTYPE html>
@@ -307,7 +307,13 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
+          <?php if($imagen_perfil == null){ ?>
+                        <img  class="img-circle elevation-2" alt="User Image" src="http://placehold.it/150x100" alt="..."/>
+                     <?php  } else{
+                         ?>
             <img class="img-circle elevation-2" alt="User Image" src="data:image/jpg; base64, <?php echo base64_encode ($imagen_perfil); ?> "/>
+            <?php  } 
+                         ?>
           </div>
           <div class="info">
             <a href="perfil.php" class="d-block"><?php  echo $nombre_persona." ".$apellido_persona; ?></a>
@@ -350,6 +356,15 @@
               </a>
             </li>
 
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-box"></i>
+                  <p>
+                    Consultas rapidas
+                  </p>
+                </a>
+            </li>
+
             <?php } ?>
 
             <?php 
@@ -386,7 +401,7 @@
             </li>
 
             <li class="nav-item has-treeview">
-                <a href="favorito.php" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-box"></i>
                   <p>
                     Consultas rapidas
@@ -441,9 +456,13 @@
                   <!-- <img class="profile-user-img img-fluid img-circle"
                        src="dist/img/user4-128x128.jpg"
                        alt="User profile picture"> -->
-
+                       <?php if($imagen_perfil == null){ ?>
+                        <img id="avatar2" class="profile-user-img img-fluid img-circle" src="http://placehold.it/150x100" alt="..."/>
+                     <?php  } else{
+                         ?>
                        <img id="avatar2" class="profile-user-img img-fluid img-circle" src="data:image/jpg; base64, <?php echo base64_encode ($imagen_perfil); ?> "/>
-
+                       <?php  } 
+                         ?>
 
                 </div>
 
@@ -544,7 +563,12 @@
                       <div class="form-group row">
                         <label for="" class="col-sm-2 col-form-label">Especialidad</label>
                         <div class="col-sm-10">
-                          <?php echo $especialidad_profesionalUno?>
+                          <?php  if($especialidad == NULL){
+                            echo "Elija una especialidad";
+                          }else{
+                            echo $especialidad_profesionalUno;
+                          }
+                                 ?>
                         </div>
                       </div>
                       <hr>

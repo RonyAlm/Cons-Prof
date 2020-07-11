@@ -1,3 +1,94 @@
+<?php
+   //codigo consulta mysqli
+   session_start();
+   require '../../login/funcs/conexion.php';
+   require '../../login/funcs/funcs.php';
+
+   if(!isset($_SESSION['id_usuario'])){
+       header("Location: login.php");
+   }
+
+   $idUsuario = $_SESSION['id_usuario'];
+
+   $sql = "SELECT id_usuario, nombre_persona, rela_persona FROM usuario,persona WHERE id_usuario = '$idUsuario'";
+   $result = $mysqli->query($sql);
+   $row = $result->fetch_assoc();
+   $relac_per = $row['rela_persona'];
+   
+   //fin consulta mysqli
+   
+   
+   
+   // //codigo consulta PDO
+  include_once('../conexion.php');
+
+
+  
+ 
+  //Consulta General;
+  //HACEMOS UNA CONSULTA A LA TABLA USERS PARA EXTRAERME LAS FILAS Y GUARDAMOS $sentenciauser//
+  $sentenciauser= $base_de_datos->query("SELECT * FROM usuario,persona WHERE id_usuario = $idUsuario 
+                                         AND rela_persona =  $relac_per");
+  $usuario=$sentenciauser->fetchAll(PDO::FETCH_OBJ); // fetchAll devuelve toda la fila de la base de datos
+  foreach ($usuario as $cosas) {
+    $id_user=$cosas->id_usuario;
+    $nombre_usuario=$cosas->nombre_usuario;
+    $rela_tipo=$cosas->rela_tipo;
+    $rela_persona_usuario = $cosas->rela_persona;
+  }
+
+  
+  $sentenciapersona= $base_de_datos->query("SELECT * FROM persona where id_persona = $relac_per");
+  $sentenciaprof= $base_de_datos->query("SELECT * FROM profesional where rela_persona = $relac_per");
+  if($rela_tipo == 1){
+    $sentencia_cliente= $base_de_datos->query("SELECT * FROM cliente");
+  } elseif ($rela_tipo == 2){
+    $sentencia_cliente= $base_de_datos->query("SELECT * FROM cliente where rela_persona = $relac_per");
+  }
+
+     $sql_profesion = "SELECT * FROM profesion";
+     $query_profesion = $base_de_datos->prepare($sql_profesion);
+     $query_profesion->execute();
+     $result_profesion = $query_profesion->fetchAll(PDO::FETCH_ASSOC);
+     
+    
+  
+  $personas=$sentenciapersona->fetchAll(PDO::FETCH_OBJ);
+  $prof=$sentenciaprof->fetchAll(PDO::FETCH_OBJ);
+  $cliente = $sentencia_cliente->fetchAll(PDO::FETCH_OBJ);
+
+  foreach ($cliente as $clientes) {
+    $id_cliente=$clientes->id_cliente;
+    $rela_persona_cliente=$clientes->rela_persona;
+  }
+
+  //print_r($personas);
+  //RECORREMOS EL ARRAY PERSONAS PARA ASIGNARLE CADA ELEMENTO DELA TABLA A UNA VARIABLE
+  
+
+  foreach($personas as $persona){
+    $id_persona=$persona->id_persona;
+    $nombre_persona=$persona->nombre_persona;
+    $apellido_persona=$persona->apellido_persona;
+    $dni_persona=$persona->dni_persona;
+    $correo_persona=$persona->correo_persona;
+    $direccion=$persona->direccion;
+    $cuil_persona=$persona->cuil_persona;
+    $dni_persona=$persona->dni_persona;
+    $imagen_perfil=$persona->imagen_icono;
+  }
+  //echo $id_persona;
+
+  foreach($prof as $profe){
+    $id_profesional=$profe->id_profesional;
+    $matricula=$profe->matricula;
+    $imagen_titulo= $profe->imagen_titulo;
+    $imagen_matricula= $profe->imagen_matricula;
+    $especialidad= $profe->especialidad;
+  }
+
+ ?>
+
 <?php 
     include_once('../conexion.php');
 
@@ -27,6 +118,9 @@
 
   <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
     <div class="card bg-light">
+        <form action="administrar_perfil.php" method="post">
+            <input type="hidden" name="id_profesional" value="<?php echo $profesionales['id_profesional']; ?>" >
+            <input type="hidden" name="id_cliente" value="<?php echo $id_cliente; ?>" >
       <div class="card-header text-muted border-bottom-0">
       <?php 
         echo $profesionales['descripcion_profesion'];
@@ -52,11 +146,12 @@
           <a href="#" class="btn btn-sm bg-teal">
             <i class="fas fa-comments"></i>
           </a>
-          <a href="#" class="btn btn-sm btn-primary">
-            <i class="fas fa-user"></i> Ver Perfil
+          <a class="btn btn-sm btn-warning">
+            <button type="submit" name="añadir_favorito" style="padding: 8px; border: none; text-decoration: none; background-color: transparent;" class="fas fa-star btn-warning"></button> Favorito
           </a>
         </div>
       </div>
+      </form>
     </div>
   </div>
   <?php 

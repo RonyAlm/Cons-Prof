@@ -208,6 +208,14 @@
      <!-- Sidebar Menu -->
      <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+             <li class="nav-item has-treeview">
+                  <a href="inicio.php" class="nav-link">
+                    <i class="nav-icon fas fa-home"></i>
+                    <p>
+                      Inicio
+                    </p>
+                  </a>
+              </li>
             <?php 
                  if( $rela_tipo == 1 ){
                   
@@ -234,15 +242,34 @@
                   </p>
                 </a>
               </li>
-              
+
               <li class="nav-item">
-                <a href="data_cliente.php" class="nav-link">
-                  <i class="nav-icon fas fa-th"></i>
+              <a href="data_cliente.php" class="nav-link">
+                <i class="nav-icon fas fa-clock"></i>
+                <p>
+                  Consultas Pendientes
+                </p>
+              </a>
+            </li>
+            
+            <li class="nav-item has-treeview">
+                <a href="favorito.php" class="nav-link">
+                  <i class="nav-icon far fa-star"></i>
                   <p>
-                    Consultas Pendientes
+                    Favorito
                   </p>
                 </a>
-              </li>
+            </li>
+
+            <li class="nav-item has-treeview">
+                <a href="favorito.php" class="nav-link">
+                  <i class="nav-icon fas fa-box"></i>
+                  <p>
+                    Consultas rapidas
+                  </p>
+                </a>
+            </li>
+
 
           </ul>
         </nav>

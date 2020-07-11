@@ -247,11 +247,34 @@ if (isset($_POST['añadir_favorito'])) {
 
 
   $id_cliente=$_POST["id_cliente"];
-  $id_profesional=$_POST["id_users"];
+  $id_profesional=$_POST["id_profesional"];
 
 
   $sentencia_favorito=$base_de_datos->query("INSERT INTO `favorito`(`rela_cliente_favorito`, `rela_profesional_favorito`)
                                           VALUES ($id_cliente,$id_profesional)");
+
+  $favorito=$sentencia_favorito->fetchAll(PDO::FETCH_OBJ);
+
+  if ($favorito) {
+    echo "<script> alert('DATOS ACTUALIZADOS'); </script>";
+
+    // print_r($resultado);
+
+
+  }else {
+    echo "<script> alert('DATOS NO ACTUALIZADOS'); </script>";
+    header('Location: favorito.php');
+  }
+}
+
+if (isset($_POST['eliminar_favorito'])) {
+
+
+  
+  $id_favorito=$_POST["id_favorito"];
+
+
+  $sentencia_favorito=$base_de_datos->query("DELETE FROM `favorito` WHERE favorito.id_favorito = $id_favorito");
 
   $favorito=$sentencia_favorito->fetchAll(PDO::FETCH_OBJ);
 

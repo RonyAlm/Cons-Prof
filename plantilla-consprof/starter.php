@@ -129,7 +129,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="starter.php" class="nav-link">Casa</a>
+          <a href="inicio.php" class="nav-link">Inicio</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
           <a href="#" class="nav-link">Contacto</a>
@@ -252,6 +252,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
      <!-- Sidebar Menu -->
      <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+              <li class="nav-item has-treeview">
+                  <a href="inicio.php" class="nav-link">
+                    <i class="nav-icon fas fa-home"></i>
+                    <p>
+                      Inicio
+                    </p>
+                  </a>
+              </li>
             <?php 
                  if( $rela_tipo == 1 ){
                   
@@ -278,6 +286,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </a>
             </li>
 
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-box"></i>
+                  <p>
+                    Consultas rapidas
+                  </p>
+                </a>
+            </li>
+
             
 
           </ul>
@@ -298,7 +315,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Casa</a></li>
+              <li class="breadcrumb-item"><a href="#">Inicio</a></li>
               <li class="breadcrumb-item active">Administrar Consultas</li>
             </ol>
           </div><!-- /.col -->

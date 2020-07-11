@@ -205,7 +205,7 @@ AND profesional.rela_profesion=profesion.id_profesion'*/
           <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="starter.php" class="nav-link">Inicio</a>
+          <a href="#" class="nav-link">Inicio</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
           <a href="#" class="nav-link">Contacto</a>
@@ -215,7 +215,13 @@ AND profesional.rela_profesion=profesion.id_profesion'*/
       <!-- FORMULARIO DE BUSCAR -->
       <form class="form-inline ml-3" id="form-busqueda">
         <div class="input-group input-group-sm">
-          <input class="form-control form-control-navbar" type="search" name="busqueda" id="search" placeholder="Buscar.." aria-label="Buscar">
+             <?php 
+                 if( $rela_tipo == 1 ){
+              ?>
+              <input class="form-control form-control-navbar" type="search"  placeholder="Buscar" aria-label="Buscar">
+              <?php } elseif( $rela_tipo == 2 ){ ?>
+                <input class="form-control form-control-navbar" type="search" name="busqueda" id="search" placeholder="Buscar profesional" aria-label="Buscar">
+              <?php } ?>
           <div class="input-group-append">
             <button class="btn btn-navbar" type="submit">
               <i class="fas fa-search"></i>
@@ -327,7 +333,7 @@ AND profesional.rela_profesion=profesion.id_profesion'*/
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             
             <li class="nav-item has-treeview">
-                <a href="inicio.php" class="nav-link">
+                <a href="inicio.php" class="nav-link active">
                   <i class="nav-icon fas fa-home"></i>
                   <p>
                     Inicio
@@ -356,6 +362,15 @@ AND profesional.rela_profesion=profesion.id_profesion'*/
                   Consultas Pendientes
                 </p>
               </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-box"></i>
+                  <p>
+                    Consultas rapidas
+                  </p>
+                </a>
             </li>
 
             <?php } ?>
@@ -394,7 +409,7 @@ AND profesional.rela_profesion=profesion.id_profesion'*/
             </li>
 
             <li class="nav-item has-treeview">
-                <a href="favorito.php" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-box"></i>
                   <p>
                     Consultas rapidas
@@ -403,6 +418,8 @@ AND profesional.rela_profesion=profesion.id_profesion'*/
             </li>
             
             <?php } ?>
+
+            
 
           </ul>
         </nav>

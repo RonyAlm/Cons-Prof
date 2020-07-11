@@ -107,13 +107,19 @@
     $especialidad= $profe->especialidad;
   }
 
-
-    $sentenciauser= $base_de_datos->query("SELECT * FROM `favorito`, `profesional`, `cliente`
-                                            WHERE`rela_cliente_favorito` = $id_cliente
-                                            and `rela_profesional_favorito`= `id_profesional`");
+ 
+    $sentenciauser= $base_de_datos->query("SELECT *
+    FROM `favorito`, `profesional`,profesion, persona
+    WHERE`rela_cliente_favorito` = $id_cliente
+    and `rela_profesional_favorito`= profesional.id_profesional
+    And profesional.rela_persona = persona.id_persona 
+    AND profesional.rela_profesion = profesion.id_profesion;");
 
     $personas=$sentenciauser->fetchAll(PDO::FETCH_OBJ);
-
+   /*foreach($personas as $favorito){
+      $id_favorito=$favorito->id_favorito;
+   }
+   echo $id_favorito;*/
     
 
  ?>
@@ -123,24 +129,58 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Cons-Prof | Favorito</title>
+  <title>Consprof | Perfil Usuario</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- overlayScrollbars -->
+  <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- daterange picker -->
+  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
+
+
+
+  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- Bootstrap Color Picker -->
+  <link rel="stylesheet" href="plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+  <!-- Tempusdominus Bbootstrap 4 -->
+  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- Bootstrap4 Duallistbox -->
+  <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+
+  <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+
+
+
+  <!-- page specific plugin styles -->
+  <link rel="stylesheet" href="assets/css/colorbox.min.css" />
+
+  <!-- ace styles -->
+  <link rel="stylesheet" href="assets/css/ace-part2.min.css"  />
+
+  <link rel="stylesheet" href="css/style.css"  />
+
+
+
+
+
+
 </head>
 <body class="hold-transition sidebar-mini">
-<!-- Site wrapper -->
 <div class="wrapper">
-   <!-- Navbar -->
-   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
       <!-- Left navbar links -->
       <ul class="navbar-nav">
         <li class="nav-item">
@@ -356,16 +396,22 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header" >
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Contacts</h1>
+            <h1>Favoritos</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Contacts</li>
+              <li class="breadcrumb-item"><a  href="#">Inicio</a></li>
+              <?php 
+                 if( $rela_tipo == 1 ){
+              ?>
+              <li class="breadcrumb-item active">Inicio del Profesional</li>
+              <?php } elseif( $rela_tipo == 2 ){ ?>
+              <li class="breadcrumb-item active">Favorito</li>
+              <?php } ?>
             </ol>
           </div>
         </div>
@@ -373,78 +419,94 @@
     </section>
 
     <!-- Main content -->
-    <section class="content">
-
-      <!-- Default box -->
-
-      <div class="card card-solid">
-        <div class="card-body pb-0">
-          <div class="row d-flex align-items-stretch">
-            <?php foreach ($personas as $key) {?>
-            <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
-              <div class="card bg-light">
-                <div class="card-header text-muted border-bottom-0">
-                  <?php echo " $key->especialidad "?>
-                </div>
-                <div class="card-body pt-0">
-                  <div class="row">
-                    <div class="col-7">
-                      <h2 class="lead"><b><?php echo " $key->name" ?></b></h2>
-                      <p class="text-muted text-sm"><b>About: </b> Web Designer / UX / Graphic Artist / Coffee Lover </p>
-                      <ul class="ml-4 mb-0 fa-ul text-muted">
-                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Dirección: <?php echo " $key->direccion"?></li>
-                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Matricula: <?php echo "$key->matricula" ?></li>
-                      </ul>
-                    </div>
-                    <div class="col-5 text-center">
-                      <img src="data:image/jpg; base64, <?php echo base64_encode ($key->imagen_icono); ?> " alt="" class="img-circle img-fluid">
-                    </div>
-                  </div>
-                </div>
-                <div class="card-footer">
-                  <div class="text-right">
-
-                    <a  class="btn btn-sm btn-warning">
-                      <i  class="fas fa-user" class="submit"></i> Favorito
-                    </a>
-                  </div>
-                </div>
-              </div>
+    <section class="content" id="user-profile-2">
+      <div class="container-fluid">
+        <div class="row">
+            <!--<div class="col-sm-12" style="background-color: #0199AE; height: 40px; width: 100%;">
             </div>
-              <?php   }?>
-
-          </div>
+            <div class="col-sm-12 fondoPantalla"> -->
+              <!--7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777-->
+                        <!-- Default box -->
+                <div class="card card-solid fondoPantalla">
+                  <div class="card-body pb-0">
+                    <div class="row d-flex align-items-stretch">
+                      <?php foreach($personas as $favorito){?>
+                    <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                        <div class="card bg-light">
+                            <form action="administrar_perfil.php" method="post">
+                                
+                                <input type="hidden" name="id_favorito" value="<?php echo $favorito->id_favorito; ?>" >
+                          <div class="card-header text-muted border-bottom-0">
+                          <?php 
+                            echo $favorito->descripcion_profesion;
+                          ?>
+                          </div>
+                          <div class="card-body pt-0">
+                            <div class="row"> 
+                              <div class="col-7">
+                                <h2 class="lead"><b><?php echo $favorito->nombre_persona." ".$favorito->apellido_persona; ?></b></h2>
+                                <p class="text-muted text-sm"><b>Especialidades: </b> <?php echo $favorito->especialidad; ?> </p>
+                                <ul class="ml-4 mb-0 fa-ul text-muted">
+                                  <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Correo: <?php echo  $favorito->correo_persona; ?></li>
+                                  <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Phone #: + 800 - 12 12 23 52</li>
+                                </ul>
+                              </div>
+                              <div class="col-5 text-center">
+                              <img src="data:image/jpg; base64, <?php echo base64_encode ($favorito->imagen_icono); ?>" alt="" class="img-circle img-fluid">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="card-footer">
+                            <div class="text-right">
+                              <a href="#" class="btn btn-sm bg-teal">
+                                <i class="fas fa-comments" title="Consulta rapida"></i>
+                              </a>
+                              <a  class="btn btn-sm btn-danger">
+                                <button type="submit" name="eliminar_favorito"  style="padding: 8px; border: none; text-decoration: none; background-color: transparent;" class="fas fa-trash btn-danger" title="Eliminar favorito"></button>
+                              </a>
+                            </div>
+                          </div>
+                          </form>
+                        </div>
+                      </div>
+                      <?php 
+                          }
+                       
+                          ?>
+                    </div>
+                  </div>
+                  <!-- /.card-body -->
+                  <div class="card-footer">
+                    <nav aria-label="Contacts Page Navigation">
+                      <ul class="pagination justify-content-center m-0">
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                        <li class="page-item"><a class="page-link" href="#">6</a></li>
+                        <li class="page-item"><a class="page-link" href="#">7</a></li>
+                        <li class="page-item"><a class="page-link" href="#">8</a></li>
+                      </ul>
+                    </nav>
+                  </div>
+                  <!-- /.card-footer -->
+                </div>
+                <!-- /.card -->
+              <!--7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777-->
+            <!--</div>-->
         </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-          <nav aria-label="Contacts Page Navigation">
-            <ul class="pagination justify-content-center m-0">
-              <li class="page-item active"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">4</a></li>
-              <li class="page-item"><a class="page-link" href="#">5</a></li>
-              <li class="page-item"><a class="page-link" href="#">6</a></li>
-              <li class="page-item"><a class="page-link" href="#">7</a></li>
-              <li class="page-item"><a class="page-link" href="#">8</a></li>
-            </ul>
-          </nav>
-        </div>
-        <!-- /.card-footer -->
-      </div>
-      <!-- /.card -->
-
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.0.5
+      <b>Version</b> 1.0.1
     </div>
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
-    reserved.
+    <strong> Lic. Tic &copy; 2020 <a href="#"> ConsProf</a>.</strong> Todos los derechos reservados.
   </footer>
 
   <!-- Control Sidebar -->
@@ -463,5 +525,236 @@
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+
+
+<!-- Select2 -->
+<script src="plugins/select2/js/select2.full.min.js"></script>
+<!-- Bootstrap4 Duallistbox -->
+<script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<!-- InputMask -->
+<script src="plugins/moment/moment.min.js"></script>
+<script src="plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+<!-- date-range-picker -->
+<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Bootstrap Switch -->
+<script src="plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+
+<!--busquedad-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+
+<!-- page specific plugin scripts -->
+<script src="assets/js/jquery.colorbox.min.js"></>
+<script >
+   $(document).ready(function() {
+          //Initialize Select2 Elements
+      $('.select2').select2()
+
+      //Initialize Select2 Elements
+      $('.select2bs4').select2({
+        theme: 'bootstrap4'
+      })
+   });
+</script>
+
+<script >
+     $(document).ready(function() {
+        //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+    //Datemask2 mm/dd/yyyy
+    $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+    //Money Euro
+    $('[data-mask]').inputmask()
+
+    //Date range picker
+    $('#reservationdate').datetimepicker({
+        format: 'L'
+    });
+    //Date range picker
+    $('#reservation').daterangepicker()
+    //Date range picker with time picker
+    $('#reservationtime').daterangepicker({
+      timePicker: true,
+      timePickerIncrement: 30,
+      locale: {
+        format: 'MM/DD/YYYY hh:mm A'
+      }
+    })
+    //Date range as a button
+    $('#daterange-btn').daterangepicker(
+      {
+        ranges   : {
+          'Today'       : [moment(), moment()],
+          'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+          'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        startDate: moment().subtract(29, 'days'),
+        endDate  : moment()
+      },
+      function (start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+      }
+    )
+
+    //Timepicker
+    $('#timepicker').datetimepicker({
+      format: 'LT'
+    })
+
+    //Bootstrap Duallistbox
+    $('.duallistbox').bootstrapDualListbox()
+
+    //Colorpicker
+    $('.my-colorpicker1').colorpicker()
+    //color picker with addon
+    $('.my-colorpicker2').colorpicker()
+
+    $('.my-colorpicker2').on('colorpickerChange', function(event) {
+      $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+    });
+
+    $("input[data-bootstrap-switch]").each(function(){
+      $(this).bootstrapSwitch('state', $(this).prop('checked'));
+    });
+
+    });
+
+
+    $('#avatar2').on('click', function(){
+    var modal =
+    '<div class="modal fade">\
+      <div class="modal-dialog">\
+      <div class="modal-content">\
+      <div class="modal-header">\
+        <button type="button" class="close" data-dismiss="modal">&times;</button>\
+        <h4 class="blue">Editar Imagen</h4>\
+      </div>\
+      \
+      <form class="no-margin" method="POST" action="administrar_perfil.php" enctype="multipart/form-data">\
+      <div class="modal-body">\
+      <input type="hidden" name="id_user" value="<?php echo $id_persona?>">\
+        <div class="space-4"></div>\
+        <div style="width:75%;margin-left:12%;"><input type="file" name="imagen" /></div>\
+      </div>\
+      \
+      <div class="modal-footer center">\
+        <button type="submit" class="btn btn-sm btn-success" name="actualizar_iconos"><i class="ace-icon fa fa-check"></i> Editar</button>\
+        <button type="button" class="btn btn-sm" data-dismiss="modal"><i class="ace-icon fa fa-times"></i> Cancelar</button>\
+      </div>\
+      </form>\
+      </div>\
+    </div>\
+    </div>';
+
+
+    var modal = $(modal);
+    modal.modal("show").on("hidden", function(){
+      modal.remove();
+    });
+
+    var working = false;
+
+    var form = modal.find('form:eq(0)');
+    var file = form.find('input[type=file]').eq(0);
+    file.ace_file_input({
+      style:'well',
+      btn_choose:'Click to choose new avatar',
+      btn_change:null,
+      no_icon:'ace-icon fa fa-picture-o',
+      thumbnail:'small',
+      before_remove: function() {
+        //don't remove/reset files while being uploaded
+        return !working;
+      },
+      allowExt: ['jpg', 'jpeg', 'png', 'gif'],
+      allowMime: ['image/jpg', 'image/jpeg', 'image/png', 'image/gif']
+    });
+
+    form.on('submit', function(){
+      if(!file.data('ace_input_files')) return false;
+
+      file.ace_file_input('disable');
+      form.find('button').attr('disabled', 'disabled');
+      form.find('.modal-body').append("<div class='center'><i class='ace-icon fa fa-spinner fa-spin bigger-150 orange'></i></div>");
+
+      var deferred = new $.Deferred;
+      working = true;
+      deferred.done(function() {
+        form.find('button').removeAttr('disabled');
+        form.find('input[type=file]').ace_file_input('enable');
+        form.find('.modal-body > :last-child').remove();
+
+        modal.modal("hide");
+
+        var thumb = file.next().find('img').data('thumb');
+        if(thumb) $('#avatar2').get(0).src = thumb;
+
+        working = false;
+      });
+
+
+      setTimeout(function(){
+        deferred.resolve();
+      } , parseInt(Math.random() * 800 + 800));
+
+      return false;
+    });
+     })
+</script>
+
+
+    <script type="text/javascript">
+          jQuery(function($) {
+        var $overflow = '';
+        var colorbox_params = {
+        rel: 'colorbox',
+        reposition:true,
+        scalePhotos:true,
+        scrolling:false,
+        previous:'<i class="ace-icon fa fa-arrow-left"></i>',
+        next:'<i class="ace-icon fa fa-arrow-right"></i>',
+        close:'&times;',
+        current:'{current} of {total}',
+        maxWidth:'100%',
+        maxHeight:'100%',
+        onOpen:function(){
+          $overflow = document.body.style.overflow;
+          document.body.style.overflow = 'hidden';
+        },
+        onClosed:function(){
+          document.body.style.overflow = $overflow;
+        },
+        onComplete:function(){
+          $.colorbox.resize();
+        }
+        };
+
+        $('.ace-thumbnails [data-rel="colorbox"]').colorbox(colorbox_params);
+        $("#cboxLoadingGraphic").html("<i class='ace-icon fa fa-spinner orange fa-spin'></i>");//let's add a custom loading icon
+
+
+        $(document).one('ajaxloadstart.page', function(e) {
+        $('#colorbox, #cboxOverlay').remove();
+        });
+        })
+    </script>
 </body>
 </html>

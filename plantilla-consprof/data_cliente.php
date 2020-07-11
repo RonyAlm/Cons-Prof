@@ -283,7 +283,14 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            
+            <li class="nav-item has-treeview">
+                <a href="inicio.php" class="nav-link">
+                  <i class="nav-icon fas fa-home"></i>
+                  <p>
+                    Inicio
+                  </p>
+                </a>
+            </li>
             <li class="nav-header">SERVICIO DISPONIBLE</li>
 
             <li class="nav-item has-treeview">
@@ -304,6 +311,25 @@
                   Consultas Pedientes
                 </p>
               </a>
+            </li>
+            
+    
+            <li class="nav-item has-treeview">
+                <a href="favorito.php" class="nav-link">
+                  <i class="nav-icon far fa-star"></i>
+                  <p>
+                    Favorito
+                  </p>
+                </a>
+            </li>
+
+            <li class="nav-item has-treeview">
+                <a href="favorito.php" class="nav-link">
+                  <i class="nav-icon fas fa-box"></i>
+                  <p>
+                    Consultas rapidas
+                  </p>
+                </a>
             </li>
 
           </ul>
@@ -425,26 +451,26 @@
                 <div class="form-group row">
                   <label for="inputName" class="col-md-6 col-form-label">Nombre de la tarjeta</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="entrar_sala" value="<?php echo $nombre_persona.' '.$apellido_persona; ?>" required>
+                    <input type="text" class="form-control" name="nombre_tarjeta" value="<?php echo $nombre_persona.' '.$apellido_persona; ?>" required>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="inputName" class="col-md-6 col-form-label">Número de la tarjeta</label>
                   <div class="col-sm-10">
-                    <input type="text" id="entrar_sala" class="form-control" name="entrar_sala" required>
+                    <input type="text" id="entrar_sala" class="form-control" name="numero_tarjeta" required>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="inputName" class="col-md-6 col-form-label">CVC</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="entrar_sala"  required>
+                    <input type="text" class="form-control" name="cvc"  required>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="inputName" class="col-md-6 col-form-label">Fecha de expiración (MM/AA)</label>
                   <div class="col-sm-10">
-                    <input style="width:50px;display:inline-block" type="text" class="form-control" name="entrar_sala"  maxlength="2" required>
-                    <input style="width:50px;display:inline-block" type="submit" class="form-control" name="entrar_sala"  maxlength="2" required>
+                    <input style="width:50px;display:inline-block" type="text" class="form-control" name="mes"  maxlength="2" required>
+                    <input style="width:50px;display:inline-block" type="text" class="form-control" name="año"  maxlength="2" required>
                   </div>
                 </div>
 
