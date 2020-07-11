@@ -35,7 +35,7 @@ $profesion=$_POST['profesion'];
 
 
 	$sql_2="SELECT id_consulta, rela_profesional, precio_consulta, descripcion_consulta, rela_tipo_consulta,
-	descripcio_tipo_consulta from consulta,tipo_consulta where consulta.rela_profesional= $profesional 
+	descripcio_tipo_consulta from consulta,tipo_consulta where consulta.rela_profesional= $profesional
 	and rela_tipo_consulta = id_tipo_consulta";
 
 	$query_2 =$base_de_datos->prepare($sql_2);

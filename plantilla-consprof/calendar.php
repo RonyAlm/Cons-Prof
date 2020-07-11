@@ -36,10 +36,7 @@
   $sentenciatipoconsulta= $base_de_datos->query("SELECT * FROM tipo_consulta ");
   $sentenciaconsulta= $base_de_datos->query("SELECT id_consulta, precio_consulta, descripcion_consulta, descripcio_tipo_consulta FROM consulta ,tipo_consulta, profesional WHERE rela_profesional= id_profesional and rela_tipo_consulta=id_tipo_consulta ");
   
-     $sql = "SELECT * FROM turnos";
-     $query = $base_de_datos->prepare($sql);
-     $query->execute();
-     $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
+     
 
      $sql_profesion = "SELECT * FROM profesion";
      $query_profesion = $base_de_datos->prepare($sql_profesion);
@@ -54,7 +51,11 @@
      foreach ($result_cliente as $cli) {
       $id_cliente=$cli['id_cliente'];
     }
-    echo $id_cliente;
+    //echo $id_cliente;
+     $sql = "SELECT * FROM turnos Where rela_cliente_turno = $id_cliente ";
+     $query = $base_de_datos->prepare($sql);
+     $query->execute();
+     $resultado = $query->fetchAll(PDO::FETCH_ASSOC);
 
   //ALMACENAMOS EN UN ARRAY LA VARIABLE ESTUDIOS COMO PERSONAS.
   $estudios= $sentenciatipoestudio->fetchAll(PDO::FETCH_OBJ);

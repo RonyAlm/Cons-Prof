@@ -15,7 +15,7 @@ $profesional=$_POST['profesional'];
 
 	foreach($result as $fila){
         $profesional=$fila['id_profesional'];
-        echo '<input type="hidden" name="id_profesional" id="id_profe_prueba" value='.$profesional.'>';
+        echo '<input type="text" name="id_profesional" id="id_profe_prueba" value='.$profesional.'>';
 	}
    
 

@@ -142,7 +142,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Consultas Pendientes</title>
+  <title>Cons-prof | Consultas Pendientes | Profesional</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -150,9 +150,18 @@
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+ <!-- DataTables -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="dataTables/assets/bootstrap/css/bootstrap.min.css">
+    <!-- CSS personalizado --> 
+    <link rel="stylesheet" href="dataTables/main.css">  
+    <!--datables CSS básico-->
+    <link rel="stylesheet" type="text/css" href="dataTables/assets/datatables/datatables.min.css"/>
+    <!--datables estilo bootstrap 4 CSS-->  
+    <link rel="stylesheet"  type="text/css" href="dataTables/assets/datatables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css">    
+      
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"> 
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
@@ -297,51 +306,23 @@
             <div class="card">
 
               <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
-                  <thead>
-                  <tr>
-                    <th>Cliente</th>
-                    <th>Consulta</th>
-                    <th>Nombre de Consulta</th>
-                    <th>Precio</th>
-                    <th>Fecha</th>
-                    <th>Acción</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-
-                    <?php foreach ($turnos as $key): ?>
-
-
-                  <tr>
-
-                    <td><?php echo $key['nombre_persona']; ?></td>
-                    <td><?php echo $key['descripcio_tipo_consulta']; ?></td>
-                    <td><?php echo $key['descripcion_consulta']; ?></td>
-                    <td><?php echo $key['precio_consulta']; ?></td>
-                    <td><?php echo $key['start']; ?></td>
-                    <td>
-                      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
-                        Iniciar
-                      </button>
-                    </td>
-
-                  </tr>
-                  <?php endforeach; ?>
-
-
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>Cliente</th>
-                    <th>Consulta</th>
-                    <th>Nombre de Consulta</th>
-                    <th>Precio</th>
-                    <th>Fecha</th>
-                    <th>Acción</th>
-                  </tr>
-                  </tfoot>
-                </table>
+                <div class="table-responsive">        
+                          <table id="tablaUsuarios" class="table table-striped table-bordered table-condensed" style="width:100%" >
+                              <thead class="text-center">
+                                  <tr>
+                                      <th>id</th>
+                                      <th>Profesional</th>
+                                      <th>Consulta</th>
+                                      <th>Nombre de Consulta</th>
+                                      <th>Precio</th>
+                                      <th>Fecha</th>
+                                      <th>Acciones</th>
+                                  </tr>
+                              </thead>
+                              <tbody>                           
+                              </tbody>        
+                          </table>               
+                  </div><!-- /.card-body -->
               </div>
               <!-- /.card-body -->
             </div>
@@ -363,10 +344,10 @@
               </button>
             </div>
             <div class="modal-body">
-              <form class="form-horizontal" action="administrar_perfil.php"  method="POST">
-                <input type="hidden" name="id_tuno" value="">
-                <input type="hidden" name="id_cliente" value="1">
-                <input type="hidden" name="id_profesional" value="3" required>
+              <form class="form-horizontal" action="proyecto_conprof/public_html/index.php"  method="POST">
+                <input type="hidden" name="id_sala" value="">
+                <input type="text" name="id_cliente" id="id_cliente" class="id_cliente">
+                <input type="text" name="id_profesional" value="<?php echo $id_profesional; ?>" required>
                 <div class="form-group row">
                   <label for="inputName" class="col-sm-3 col-form-label">Nombre de la Sala</label>
                   <div class="col-sm-10">
@@ -406,10 +387,16 @@
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- DataTables -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<!-- DataTables -->
+<!-- jQuery, Popper.js, Bootstrap JS -->
+    <!--<script src="assets/jquery/jquery-3.3.1.min.js"></script>-->
+    <script src="dataTables/assets/popper/popper.min.js"></script>
+    <script src="dataTables/assets/bootstrap/js/bootstrap.min.js"></script>
+      
+    <!-- datatables JS -->
+    <script type="text/javascript" src="dataTables/assets/datatables/datatables.min.js"></script>    
+     
+    <script type="text/javascript" src="dataTables/main_2.js"></script>  
 <!-- SweetAlert2 -->
 <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- Toastr -->

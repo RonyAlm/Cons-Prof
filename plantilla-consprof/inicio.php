@@ -109,7 +109,7 @@
   
 
   
-  if( $rela_tipo == 1 ){  
+  /* if( $rela_tipo == 1 ){  
     //HACEMOS UNA CONSULTA A LA TABLA TIPO_ESTUDIO PARA EXTRAERME LAS FILAS Y GUARDAMOS $sentenciatipoestudio //
     $sentenciatipoestudio=$base_de_datos->query("SELECT * FROM tipo_estudio Where rela_profesional = $id_profesional");
     //ALMACENAMOS EN UN ARRAY LA VARIABLE ESTUDIOS COMO PERSONAS.
@@ -132,7 +132,13 @@
        $imagen_matriculaUno= $unprofesional['imagen_matricula'];
      }
     //echo $id_profesionalUno;
-  } //echo $matricula_profesionalUno." ".$especialidad_profesionalUno." ".$profesion_profesionalUno;
+  } //echo $matricula_profesionalUno." ".$especialidad_profesionalUno." ".$profesion_profesionalUno;*/
+
+  /*'SELECT persona.nombre_persona, persona.apellido_persona, persona.imagen_icono, persona.correo_persona, profesion.descripcion_profesion
+FROM profesional, persona, profesion
+WHERE profesional.rela_persona= persona.id_persona
+AND profesional.rela_profesion=profesion.id_profesion'*/
+
   
  ?>
 
@@ -180,6 +186,8 @@
   <!-- ace styles -->
   <link rel="stylesheet" href="assets/css/ace-part2.min.css"  />
 
+  <link rel="stylesheet" href="css/style.css"  />
+
 
 
 
@@ -205,9 +213,9 @@
       </ul>
 
       <!-- FORMULARIO DE BUSCAR -->
-      <form class="form-inline ml-3">
+      <form class="form-inline ml-3" id="form-busqueda">
         <div class="input-group input-group-sm">
-          <input class="form-control form-control-navbar" type="search" placeholder="Buscar" aria-label="Buscar">
+          <input class="form-control form-control-navbar" type="search" name="busqueda" id="search" placeholder="Buscar.." aria-label="Buscar">
           <div class="input-group-append">
             <button class="btn btn-navbar" type="submit">
               <i class="fas fa-search"></i>
@@ -406,21 +414,21 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header" >
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Perfil</h1>
+            <h1>Bienvenido..</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+              <li class="breadcrumb-item"><a  href="#">Inicio</a></li>
               <?php 
                  if( $rela_tipo == 1 ){
               ?>
-              <li class="breadcrumb-item active">Perfil del Profesional</li>
+              <li class="breadcrumb-item active">Inicio del Profesional</li>
               <?php } elseif( $rela_tipo == 2 ){ ?>
-              <li class="breadcrumb-item active">Perfil del Cliente</li>
+              <li class="breadcrumb-item active">Inicio del Cliente</li>
               <?php } ?>
             </ol>
           </div>
@@ -432,425 +440,37 @@
     <section class="content" id="user-profile-2">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-3">
-
-            <!-- Profile Image -->
-            <div class="card card-primary card-outline">
-              <div class="card-body box-profile">
-                <div class="text-center">
-                  <!-- <img class="profile-user-img img-fluid img-circle"
-                       src="dist/img/user4-128x128.jpg"
-                       alt="User profile picture"> -->
-
-                       <img id="avatar2" class="profile-user-img img-fluid img-circle" src="data:image/jpg; base64, <?php echo base64_encode ($imagen_perfil); ?> "/>
-
-
-                </div>
-
-
-
-                <h3 class="profile-username text-center"><?php 
-                          echo $nombre_persona." ".$apellido_persona;
-                
-                 ?></h3>
-
-              </div>
-              <!-- /.card-body -->
+            <!--<div class="col-sm-12" style="background-color: #0199AE; height: 40px; width: 100%;">
             </div>
-            <!-- /.card -->
-              
-            <!-- About Me Box -->
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Sobre mí</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <?php 
-                  if( $rela_tipo == 1 ){
-                ?>
-                <strong><i class="fas fa-book mr-1"></i> Educación</strong>
-                <?php foreach ($estudios as $nombreestudios) { ?>
-                  <p class="text-muted">
-                    <span class="tag tag-danger"><?php echo $nombreestudios->descrip_tipo_estudio?></span>
-                  </p>
-                <?php  } } ?>
-
-
-                <hr>
-
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> Ubicación</strong>
-
-                <p class="text-muted"><?php echo $direccion; ?></p>
-
-                <hr>
-                <?php 
-                  if( $rela_tipo == 1 ){
-                ?>
-                <strong><i class="fas fa-pencil-alt mr-1"></i> Especialidad</strong>
-
-                <p class="text-muted">
-                  <span class="tag tag-danger"><?php echo $especialidad_profesionalUno;?></span>
-                </p>
-                <?php } ?>
-
-              </div>
-              <!-- /.card-body -->
-            </div>
-                
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-          <div class="col-md-9">
-            <div class="card">
-              <div class="card-header p-2">
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#perfil" data-toggle="tab">Perfil</a></li>
-                  <?php 
-                  if( $rela_tipo == 1 ){
-                  ?>
-                  <li class="nav-item"><a class="nav-link " href="#timeline" data-toggle="tab">Estudios</a></li>
-                  <?php } ?>
-                  <li class="nav-item"><a class="nav-link " href="#settings" data-toggle="tab">Configuración</a></li>
-                </ul>
-              </div><!-- /.card-header -->
-
-
-              <!-- RECORREMOS EL ARRAY PERSONAS CON UN FOREACH Y EXTRAEMOS LOS DATOS DE LA TABLA USERS -->
-              <!-- INSERTAMOS LO QUE ENCUENTRA EN LA TABLA USERS Y MOSTRAMOS EN LA PAG PERFIL -->
-
-              <div class="card-body">
-                <div class="tab-content">
-                
-                  <div class="active tab-pane" id="perfil">
-                    <form class="form-horizontal">
-                      <div class="form-group row">
-                        <label for="" class="col-sm-2 col-form-label">Nombre</label>
-                        <div class="col-sm-10">
-                          <?php echo $nombre_persona." ".$apellido_persona; ?>
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="form-group row">
-                        <label for="" class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
-                          <?php echo $correo_persona; ?>
-                        </div>
-                      </div>
-                      <hr>
-                      <?php 
-                       if( $rela_tipo == 1 ){
-                      ?>
-                      <div class="form-group row">
-                        <label for="" class="col-sm-2 col-form-label">Especialidad</label>
-                        <div class="col-sm-10">
-                          <?php echo $especialidad_profesionalUno?>
-                        </div>
-                      </div>
-                      <hr>
-                      <?php } ?>
-                      
-
-                      <div class="form-group row">
-                        <label for="" class="col-sm-2 col-form-label">Dni</label>
-                        <div class="col-sm-10">
-                          <?php echo $dni_persona ?>
-                        </div>
-                      </div>
-                      
-                      <hr>
-                      <div class="form-group row">
-                        <label for="" class="col-sm-2 col-form-label">Cuil</label>
-                        <div class="col-sm-10">
-                          <?php echo $cuil_persona ?>
-                        </div>
-                      </div>
-                      <hr>
-
-                      <?php 
-                       if( $rela_tipo == 1 ){
-                      ?>
-                      <div class="form-group row">
-                        <label for="" class="col-sm-2 col-form-label">Profesion</label>
-                        <div class="col-sm-10">
-                          <?php echo $profesion_profesionalUno?>
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="form-group row">
-                        <label for="" class="col-sm-2 col-form-label">Matrícula</label>
-                        <div class="col-sm-10">
-                          <?php echo $matricula?>
-                        </div>
-                      </div>
-                      <hr>
-                      <?php } ?>
-
-                      
-                      <div class="form-group row">
-                        <label for="" class="col-sm-2 col-form-label">Dirección</label>
-                        <div class="col-sm-10">
-                          <?php echo $direccion?>
-                        </div>
-                      </div>
-
-                    </form>
-                  </div>
-                  
-                  <!-- FIN DEL RECORRIDO DEL FOREACH -->
-
-
-                  <!-- RECORREMOS EL ARRAY PERSONAS CON UN FOREACH Y EXTRAEMOS LOS DATOS DE LA TABLA TIPO_ESTUDIO -->
-                  <!-- INSERTAMOS LO QUE ENCUENTRA EN LA TABLA TIPO_ESTUDIO Y MOSTRAMOS EN LA PAG ESTUDIOS -->
-                  <!-- /.tab-pane -->
-                  <div class="tab-pane" id="timeline">
-                    <!-- The timeline -->
-
-                    <div class="timeline timeline-inverse">
-                      <?php foreach ($estudios as $estudio) {?>
-                      <div class="time-label">
-                        <span class="bg-danger">
-                          <?php echo $estudio->fecha_des_has?>
-                        </span>
-                      </div>
-
-                      <div>
-
-                        <i class="fas fa-school bg-primary"></i>
-
-                        <div class="timeline-item">
-
-                          <h3 class="timeline-header">Estudios: <?php echo $estudio->descrip_tipo_estudio ?></h3>
-
-
-                          <div class="timeline-body">
-                            <?php echo $estudio->nombre_institucion ?>
-                          </div>
-
-                        </div>
-
-                      </div>
-                      <?php   }?>
-                      <!-- FIN DEL RECORRIDO DEL FOREACH -->
-                      <!-- END timeline item -->
-                      <!-- timeline time label -->
-
-                      <!-- END timeline item -->
-                      <div>
-                        <i class="fas fa-camera bg-purple"></i>
-
-                        <div class="timeline-item">
-
-                          <h3 class="timeline-header"><a href="#">Imagenes</a> </h3>
-
-                          <div class="timeline-body">
-                            <form class="ace-thumbnails clearfix">
-                            
-          											<a href="/Programacion_Web/ConsProf/plantilla-consprof/imagenes_servidor/<?php echo $imagen_titulo; ?>" data-rel="colorbox">
-          												<img width="150" height="150" alt="150x150" src="/Programacion_Web/ConsProf/plantilla-consprof/imagenes_servidor/<?php echo $imagen_titulo; ?>" />
-          											</a>
-
-          											<a  href="/Programacion_Web/ConsProf/plantilla-consprof/imagenes_servidor/<?php echo $imagen_matricula; ?>"  data-rel="colorbox">
-          												<img width="150" height="150" alt="150x150" src="/Programacion_Web/ConsProf/plantilla-consprof/imagenes_servidor/<?php echo $imagen_matricula; ?>" />
-          											</a>
-
-
-          									</form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- COMIENZO DE LA PARTE DE IMAGENES -->
-                  </div>
-                  <!-- /.tab-pane -->
-
-                  <!-- RECORREMOS EL ARRAY PERSONAS EXTRAEMOS LOS DATOS DE LA TABLA USERS -->
-                  <!-- INSERTAMOS LO QUE ENCUENTRA EN LA TABLA USERS Y MOSTRAMOS EN LA PAG CONFIGURACION -->
-                  <!-- ASIGNAMOS EN UN INPUT EL NAME PARA PODER EXTRAER DE UN METODO POST LO QUE EL USUARIO QUIERA EDITAR -->
-                  <!-- PARA PODER MOSTRAR LOS DATOS QUE TENGO EN LA TABLA USERS INSERTO EN UN VALUE UN PHP CON LA
-                       VARIABLE QUE LE CORESPONDE (ESA VARIABLE SE ENCUENTRA DENTRO DEL FOREACH QUE ESTA AL PRINCIPIO DEL PHP PERFIL.PHP)-->
-                  <div class="tab-pane" id="settings">
-                    <form class="form-horizontal" action="administrar_perfil.php"  method="POST">
-                      <input type="hidden" name="id_user" value="<?php echo $id_persona?>">
-                      <input type="hidden" name="id_profesional" value="<?php echo $id_profesional?>">
-                      <input type="hidden" name="rela_tipo" value="<?php echo $rela_tipo?>">
-                      <!--<input type="hidden" name="descripcion_user" value="<?php //echo $descripcionuser?>" required>-->
-                      <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Nombre</label>
-                        <div class="col-sm-10">
-                          
-                          <input type="text" class="form-control" name="nombre" value="<?php     echo $nombre_persona;
+            <div class="col-sm-12 fondoPantalla"> -->
+              <!--7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777-->
+                        <!-- Default box -->
+                <div class="card card-solid fondoPantalla">
+                  <div class="card-body pb-0">
+                    <div class="row d-flex align-items-stretch" id="response">
                     
-                          ?>" required>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="apellido" class="col-sm-2 col-form-label">Apellido</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" name="apellido" value="<?php echo $apellido_persona?>" required>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" name="email" value="<?php echo $correo_persona ?>" required>
-                        </div>
-                      </div>
-                      <?php 
-                       if( $rela_tipo == 1 ){
-                      ?>
-                      <div class="form-group row">
-                        <label for="inputName2" class="col-sm-2 col-form-label">Especialidad</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" name="especialidad" value="<?php echo $especialidad; ?>" required>
-                        </div>
-                      </div>
-                      <?php } ?>
-                  
-                      <div class="form-group row">
-                        <label for="inputExperience" class="col-sm-2 col-form-label">Dni</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" name="dni"  value="<?php echo $dni_persona?>" required>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label for="inputExperience" class="col-sm-2 col-form-label">Cuil</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" name="cuil"  value="<?php echo $cuil_persona?>" required>
-                        </div>
-                      </div>
-                      <?php 
-                       if( $rela_tipo == 1 ){
-                      ?>
-                      <div class="form-group row">
-                        <label for="inputExperience" class="col-sm-2 col-form-label">Matrícula</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" name="matricula" value="<?php echo $matricula?>" required>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Profesion: </label>
-                          <div class="col-sm-10">
-                            <select  name="profesion" id="select_profesion" class="form-control select2bs4">
-                            <option selected="selected"><?php echo $profesion_profesionalUno; ?></option>
-                            <?php 
-                              foreach($result_profesion as $fila){
-                            ?>
-                              <option value="<?php echo $fila['id_profesion']; ?>"><?php echo $fila['descripcion_profesion']; ?></option>
-                              
-                            <?php } ?>
-                            </select>
-                          </div>
-                      </div>
-                      <?php } ?>
-                      <div class="form-group row">
-                        <label for="inputSkills" class="col-sm-2 col-form-label">Dirección</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" name="direccion" value="<?php echo $direccion?>" required>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-
-                          <button type="submit" class="btn btn-success float-right" name="actualizar_datos" >Editar Perfil</button>
-
-                        </div>
-                      </div>
-                    </form>
-                    <!-- FIN DEL FORMULARIO CONFIGURACION -->
-                      <?php 
-                       if( $rela_tipo == 1 ){
-                      ?>
-                    <form class="form-horizontal" action="administrar_perfil.php" method="post">
-                      <input type="hidden" name="id_user" value="<?php echo $id_profesional?>">
-                    <div class="card card-primary">
-                      <div class="card-header">
-                        <h3 class="card-title">Sobre mí</h3>
-                      </div>
-                      <!-- /.card-header -->
-                      <div class="card-body">
-                        <strong><i class="fas fa-book mr-1"></i> Estudios</strong>
-
-                          <div class="card-body">
-                            <div class="row">
-
-                              <div class="col-4">
-                                <h3 class="card-title">Duración</h3>
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text">
-                                      <i class="far fa-calendar-alt"></i>
-                                    </span>
-                                  </div>
-                                  <input type="text" name="fecha_des_has" class="form-control float-right" id="reservation" required>
-                                </div>
-                              </div>
-                              <div class="col-3">
-                                <h3 class="card-title">Estudios</h3>
-                                <!-- <div class="col-sm-6"> -->
-                                    <select class="form-control" name= "estudios" required>
-                                      <option value="Primaria">Primario</option>
-                                      <option value="Secundaria">Secundaria</option>
-                                      <option value="Terciario">Terciario</option>
-                                      <option value="Universitario">Universitario</option>
-                                    </select>
-
-                                <!-- </div> -->
-                              </div>
-                              <div class="col-5">
-                                <h3 class="card-title">Nombre de la Institución</h3>
-                                <input type="text" name="nombre_institucion" class="form-control" placeholder="Nombre de la Institución" required>
-                              </div>
-                            </div>
-                            <br>
-                            <button type="submit" id= "agregar" class="btn btn-success float-right" name="agregar_estudios">Agregar</button>
-                          </div>
-
-                        <!-- </div> -->
-                      </div>
-                      <!-- /.card-body -->
                     </div>
-                  </form>
-                  
-
-                  <form class="form-horizontal" action="administrar_perfil.php" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="id_user" value="<?php echo $id_profesional?>">
-                    <div class="card card-primary">
-                      <div class="card-header">
-                        <h3 class="card-title">Imagenes</h3>
-                      </div>
-                      <div class="card-body">
-                    <div class="form-group row">
-                      <label for="inputName" class="col-sm-2 col-form-label">Título</label>
-                      <div class="col-sm-10">
-                        <input type="file"  name="imagen_titulo"  required>
-                      </div>
-                    </div>
-
-                    <div class="form-group row">
-                      <label for="inputName" class="col-sm-2 col-form-label">Matrícula</label>
-                      <div class="col-sm-10">
-                        <input type="file"  name="imagen_matricula"  required>
-                      </div>
-                    </div>
-
-                    <button type="submit" id= "agregar" class="btn btn-success float-right" name="agregar_imagenes">Agregar</button>
-
-                    </div>
-
-
-                    </div>
-
-                  </form>
-                  <?php } ?>
-                  <!-- /.tab-pane -->
+                  </div>
+                  <!-- /.card-body -->
+                  <div class="card-footer">
+                    <nav aria-label="Contacts Page Navigation">
+                      <ul class="pagination justify-content-center m-0">
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                        <li class="page-item"><a class="page-link" href="#">6</a></li>
+                        <li class="page-item"><a class="page-link" href="#">7</a></li>
+                        <li class="page-item"><a class="page-link" href="#">8</a></li>
+                      </ul>
+                    </nav>
+                  </div>
+                  <!-- /.card-footer -->
                 </div>
-                <!-- /.tab-content -->
-              </div><!-- /.card-body -->
-            </div>
-            <!-- /.nav-tabs-custom -->
-          </div>
-          <!-- /.col -->
+                <!-- /.card -->
+              <!--7777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777777-->
+            <!--</div>-->
         </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -900,6 +520,10 @@
 <script src="plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 <!-- SweetAlert2 -->
 <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
+
+<!--busquedad-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="Buscador/js/main.js"></script>
 
 
 <!-- page specific plugin scripts -->

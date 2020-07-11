@@ -190,7 +190,7 @@ if (isset($_POST['nombre_sala'])) {
 
 
   $sentencia_sala= "INSERT INTO `sala`(`nombre_sala`, `rela_cliente_sala`, `rela_profesional_sala`)
-         VALUES(:nombre_sala, :rela_cliente, :rela_profesional)";
+         VALUES(:nombre_sala, :rela_cliente_sala, :rela_profesional_sala)";
 
    $resultado= $base_de_datos->prepare($sentencia_sala);
 
@@ -198,7 +198,7 @@ if (isset($_POST['nombre_sala'])) {
                              ':rela_cliente_sala'=>$id_cliente, ':rela_profesional_sala'=>$id_profesional));
 
    if ($resultado) {
-     echo "<script> alert('DATOS ACTUALIZADOS'); </script>";
+     echo "<script> alert('DATOS ACTUALIZADOS');</script>";
 
      // print_r($resultado);
      header('Location: proyecto_conprof/public_html/index.php');
@@ -231,9 +231,11 @@ if (isset($_POST['ingresar_sala'])) {
     $nombre_sala=$key->nombre_sala;
     $rela_profesional=$key->rela_profesional;
   }
+  
    if ($nombre_sala == $entrar_sala) {
      echo "<script> alert('DATOS ACTUALIZADOS'); </script>";
-
+       echo $id_sala;
+       echo $rela_cliente;
      header("Location: https://meet.jit.si/$entrar_sala");
    }else {
      echo "<script> alert('DATOS NO ACTUALIZADOS'); </script>";
@@ -241,5 +243,28 @@ if (isset($_POST['ingresar_sala'])) {
 
 }
 
+if (isset($_POST['añadir_favorito'])) {
+
+
+  $id_cliente=$_POST["id_cliente"];
+  $id_profesional=$_POST["id_users"];
+
+
+  $sentencia_favorito=$base_de_datos->query("INSERT INTO `favorito`(`rela_cliente_favorito`, `rela_profesional_favorito`)
+                                          VALUES ($id_cliente,$id_profesional)");
+
+  $favorito=$sentencia_favorito->fetchAll(PDO::FETCH_OBJ);
+
+  if ($favorito) {
+    echo "<script> alert('DATOS ACTUALIZADOS'); </script>";
+
+    // print_r($resultado);
+
+
+  }else {
+    echo "<script> alert('DATOS NO ACTUALIZADOS'); </script>";
+    header('Location: favorito.php');
+  }
+}
 
  ?>

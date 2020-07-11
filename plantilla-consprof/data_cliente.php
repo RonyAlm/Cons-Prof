@@ -64,18 +64,18 @@
     $dni_persona=$persona->dni_persona;
     $imagen_perfil=$persona->imagen_icono;
   }
-  echo $id_cliente;
+  //echo $id_cliente;
 
   /*$id_profesional=3;
   $id_cliente=1;*/
 
   // Inicio Consulta para sala
-  /*$sentencia_sala= $base_de_datos->query("SELECT `id_sala`, `nombre_sala`, `rela_cliente_sala`, `rela_profesional_sala` 
-                     FROM `sala` WHERE `rela_profesional_sala`= id_profesional AND `rela_cliente_sala` = $id_cliente ");
+  $sentencia_sala= $base_de_datos->query("SELECT `id_sala`, `nombre_sala`, `rela_cliente_sala`, `rela_profesional_sala` 
+                     FROM sala, profesional WHERE `rela_profesional_sala`= id_profesional AND `rela_cliente_sala` = $id_cliente ");
   $sala=$sentencia_sala->fetchAll(PDO::FETCH_OBJ);
   foreach ($sala as $key ) {
     $nombre_sala=$key->nombre_sala;
-  }*/
+  }
   // Fin Consulta para sala
 
   /*$sentenciadata= $base_de_datos->query("SELECT `id_turno`, name ,nombre_cliente,descripcion_consulta,descripcio_tipo_consulta,precio_consulta,star,`end`
@@ -127,8 +127,17 @@
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- DataTables -->
-  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="dataTables/assets/bootstrap/css/bootstrap.min.css">
+    <!-- CSS personalizado --> 
+    <link rel="stylesheet" href="dataTables/main.css">  
+    <!--datables CSS básico-->
+    <link rel="stylesheet" type="text/css" href="dataTables/assets/datatables/datatables.min.css"/>
+    <!--datables estilo bootstrap 4 CSS-->  
+    <link rel="stylesheet"  type="text/css" href="dataTables/assets/datatables/DataTables-1.10.18/css/dataTables.bootstrap4.min.css">    
+      
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">  
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
@@ -315,7 +324,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Casa</a></li>
+              <li class="breadcrumb-item"><a href="#">Inicio</a></li>
               <li class="breadcrumb-item active">Tabla de Datos</li>
             </ol>
           </div>
@@ -333,65 +342,34 @@
             <div class="card">
 
               <div class="card-body">
-                <table id="example1" class="table table-bordered table-striped">
-                  <thead>
-                  <tr>
-                    <th>Profesional</th>
-                    <th>Consulta</th>
-                    <th>Nombre de Consulta</th>
-                    <th>Precio</th>
-                    <th>Fecha</th>
-                    <th>Acción</th>
-                  </tr>
-                  </thead>
-                  <tbody>
+                <div class="table-responsive">        
+                        <table id="tablaUsuarios" class="table table-striped table-bordered table-condensed" style="width:100%" >
+                            <thead class="text-center">
+                                <tr>
+                                    <th>id</th>
+                                    <th>Profesional</th>
+                                    <th>Consulta</th>
+                                    <th>Nombre de Consulta</th>
+                                    <th>Precio</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>                           
+                            </tbody>        
+                        </table>               
+                </div><!-- /.card-body -->
+            </div> <!-- /.card -->
+              
+           
+          </div><!-- /.col -->
+          
+        </div> <!-- /.row -->
+        
+      </div> <!-- /.container-fluid -->
+      
 
-                    <?php foreach ($turnos as $key): ?>
-                       
-
-                  <tr>
-
-                    <td><?php echo $key['nombre_persona'].' '.$key['apellido_persona']; ?></td>
-                    <td><?php echo $key['descripcio_tipo_consulta']; ?></td>
-                    <td><?php echo $key['descripcion_consulta']; ?></td>
-                    <td><?php echo $key['precio_consulta']; ?></td>
-                    <td><?php echo $key['start']; ?></td>
-                    <td><?php
-                      $id = $key['id_profesional']; ?></td>
-                    <td>
-                        <button type="button" id="id_profesional_tabla" value="<?php echo $id; ?> " class="btn btn-success id_profesional_tabla">
-                          Iniciar
-                        </button>
-                    </td>
-
-                  </tr>
-                  <?php endforeach; ?>
-
-
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>Cliente</th>
-                    <th>Consulta</th>
-                    <th>Nombre de Consulta</th>
-                    <th>Precio</th>
-                    <th>Fecha</th>
-                    <th>Acción</th>
-                  </tr>
-                  </tfoot>
-                </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-
-      <div class="modal fade" id="modal-default">
+      <div class="modal fade" id="modal-default-2">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -402,8 +380,8 @@
             </div>
             <div class="modal-body">
               <form class="form-horizontal" action="administrar_perfil.php"  method="POST">
-                <input type="hidden" name="id_cliente" value="1">
-                <input type="hidden" name="id_profesional" value="3" required>
+                <input type="hidden" name="id_cliente" value="<?php echo $id_cliente; ?>">
+                <input type="hidden" class="id_profesional" name="id_profesional" id="id_profesional">
                 <div class="form-group row">
                   <label for="inputName" class="col-sm-3 col-form-label">Nombre de la Sala</label>
                   <div class="col-sm-10">
@@ -434,7 +412,8 @@
             <div class="modal-body">
               <form class="form-horizontal" action="#modal-default"   method="POST">
                 <input type="hidden" name="id_cliente" value="<?php echo $id_cliente; ?>">
-                <div id="id_profe_prueba" ></div> <!--Aca traigo el id de profesional que selecciono-->
+                <input type="hidden" class="id_profesional" name="id_profesional" id="id_profesional">
+                <!--Aca traigo el id de profesional que selecciono-->
                 <div class="pull-left alert alert-success alert-dismissable">
                   <button type="button" class="close" data-dismiss="alert">
                     <i class="ace-icon fa fa-times"></i>
@@ -452,7 +431,7 @@
                 <div class="form-group row">
                   <label for="inputName" class="col-md-6 col-form-label">Número de la tarjeta</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="entrar_sala" required>
+                    <input type="text" id="entrar_sala" class="form-control" name="entrar_sala" required>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -465,13 +444,13 @@
                   <label for="inputName" class="col-md-6 col-form-label">Fecha de expiración (MM/AA)</label>
                   <div class="col-sm-10">
                     <input style="width:50px;display:inline-block" type="text" class="form-control" name="entrar_sala"  maxlength="2" required>
-                    <input style="width:50px;display:inline-block" type="text" class="form-control" name="entrar_sala"  maxlength="2" required>
+                    <input style="width:50px;display:inline-block" type="submit" class="form-control" name="entrar_sala"  maxlength="2" required>
                   </div>
                 </div>
 
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-              <button type="submit" class="btn btn-success" name="ingresar_sala" data-toggle="modal" data-target="#modal-default" id="paga">Pagar</button>
+              <button type="button" class="btn btn-success btnPagar" name="ingresar_sala" data-toggle="modal" data-target="#modal-default-2" id="paga">Pagar</button>
             </div>
           </form>
         </div>
@@ -500,10 +479,16 @@
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- DataTables -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<!-- jQuery, Popper.js, Bootstrap JS -->
+    <!--<script src="assets/jquery/jquery-3.3.1.min.js"></script>-->
+    <script src="dataTables/assets/popper/popper.min.js"></script>
+    <script src="dataTables/assets/bootstrap/js/bootstrap.min.js"></script>
+      
+    <!-- datatables JS -->
+    <script type="text/javascript" src="dataTables/assets/datatables/datatables.min.js"></script>    
+     
+    <script type="text/javascript" src="dataTables/main.js"></script>  
+
 <!-- SweetAlert2 -->
 <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
@@ -514,63 +499,8 @@
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
-<!-- page script -->
-<script type="text/javascript">
-	$(document).ready(function(){
-		//$('#select_consulta').val(9);
-    //recargarLista();
-    //recargarListaConsult();
-    /*$(document).on("click", ".id_profesional_tabla", function(){		            
-      alert($('.id_profesional_tabla').val());             		   
-    });*/
-    
-		$('.id_profesional_tabla').click(function(){
-      cargarID();
-    }); 
-    
-    /*$('#select_profesional').change(function(){
-			recargarListaConsult();
-		});*/
-    
-	})
-</script>
 
 
-<script type="text/javascript">
-  function cargarID(){
-		$.ajax({
-			type:"POST",
-			url:"datos_2.php",
-      data:"profesional=" + $('.id_profesional_tabla').val(),
-			success:function(r){
-        $('#id_profe_prueba').html(r);
-        $('#modal-defaul').modal('show');
-			}
-		});
-  }
-</script>
-
-
-<script type="text/javascript">
- 
-</script>
-<script>
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true,
-      "autoWidth": false,
-    });
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
-  });
-</script>
 <script type="text/javascript">
   $(function() {
     const Toast = Swal.mixin({
